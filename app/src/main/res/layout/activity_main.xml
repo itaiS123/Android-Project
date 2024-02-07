@@ -8,11 +8,11 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="305dp"
-        android:layout_height="82dp"
+        android:layout_width="300dp"
+        android:layout_height="90dp"
         android:gravity="center"
         android:text="Welcom to your digital wardrobe !"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,24 +21,24 @@
 
     <Button
         android:id="@+id/wardrobe_btn"
-        android:layout_width="209dp"
-        android:layout_height="52dp"
+        android:layout_width="235dp"
+        android:layout_height="50dp"
         android:text="wardrobe"
         android:textColor="#000"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.709" />
+        app:layout_constraintVertical_bias="0.753" />
 
     <Button
         android:id="@+id/outfits_btn"
-        android:layout_width="209dp"
-        android:layout_height="52dp"
+        android:layout_width="235dp"
+        android:layout_height="50dp"
         android:text="Outfits"
         android:textColor="#000"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

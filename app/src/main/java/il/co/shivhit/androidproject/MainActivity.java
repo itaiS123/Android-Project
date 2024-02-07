@@ -38,18 +38,10 @@ public class MainActivity extends AppCompatActivity {
         wardrobe_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent outfits_intent = new Intent(MainActivity.this, Wardrobe_activity.class);
+                startActivityForResult(outfits_intent, 2);
             }
         });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Handle the case when Outfits_activity finishes
-            // You may not need to do anything specific in this case
-        }
-    }
 }
+

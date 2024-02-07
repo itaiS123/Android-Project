@@ -4,52 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Outfits_activity">
+    tools:context=".Wardrobe_activity">
 
     <TextView
-        android:id="@+id/textView3"
         android:layout_width="300dp"
         android:layout_height="90dp"
-        android:gravity="center"
-        android:text="Outfits"
+        android:text="Wardrobe"
         android:textSize="40sp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.083" />
 
     <Button
-        android:id="@+id/viewOutfits_btn"
+        android:id="@+id/addClothing_btn"
         android:layout_width="235dp"
-        android:layout_height="50dp"
-        android:text="View Outfits"
+        android:layout_height="50sp"
+        android:text="Add Clothing"
         android:textColor="#000"
-        android:textSize="20sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.651" />
+        app:layout_constraintVertical_bias="0.828" />
 
     <Button
-        android:id="@+id/makeAnOutfit_btn"
+        android:id="@+id/viewWardrobe_btn"
         android:layout_width="235dp"
-        android:layout_height="50dp"
-        android:text="Make An Outfit"
+        android:layout_height="50sp"
+        android:text="VIew Wardrobe"
         android:textColor="#000"
-        android:textSize="20sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.776" />
+        app:layout_constraintVertical_bias="0.731" />
 
     <Button
-        android:id="@+id/returnBack_Btn"
+        android:id="@+id/goBack_btn"
         android:layout_width="235dp"
         android:layout_height="50dp"
         android:text="Return Back"
@@ -57,9 +53,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.901" />
-
+        app:layout_constraintVertical_bias="0.926" />
 </androidx.constraintlayout.widget.ConstraintLayout>

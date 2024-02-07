@@ -10,9 +10,10 @@ import android.widget.Button;
 public class Outfits_activity extends AppCompatActivity {
     private Button viewOutfits_btn;
     private Button makeAnOutfit_btn;
-    private Button goBack_btn;
+    private Button returnBack_Btn;
     private Intent goBack_intent;
     private Intent makeOtfit_intent;
+    private Intent viewOutfits_intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +22,11 @@ public class Outfits_activity extends AppCompatActivity {
         InitViews();
     }
     private void InitViews() {
-        goBack_btn = findViewById(R.id.goBack_btn);
+        returnBack_Btn = findViewById(R.id.returnBack_Btn);
         viewOutfits_btn = findViewById(R.id.viewOutfits_btn);
         makeAnOutfit_btn = findViewById(R.id.makeAnOutfit_btn);
 
-        goBack_btn.setOnClickListener(new View.OnClickListener() {
+        returnBack_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -35,20 +36,17 @@ public class Outfits_activity extends AppCompatActivity {
         makeAnOutfit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent makeOtfit_intent = new Intent(Outfits_activity.this, Outfits_activity.class);
+                Intent makeOtfit_intent = new Intent(Outfits_activity.this, Make_Outfit_activity.class);
                 startActivityForResult(makeOtfit_intent, 1);
             }
         });
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Handle the case when Outfits_activity finishes
-            // You may not need to do anything specific in this case
-        }
+        viewOutfits_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewOutfits_intent = new Intent(Outfits_activity.this, View_Outfits_activity.class);
+                startActivityForResult(viewOutfits_intent, 2);
+            }
+        });
     }
 }
