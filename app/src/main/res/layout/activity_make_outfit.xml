@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Make_Outfit_activity"
+    tools:context=".ACTIVITIES.Make_Outfit_activity"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="-11dp">
 
@@ -187,10 +187,10 @@
         app:layout_constraintVertical_bias="0.789" />
 
     <Button
-        android:id="@+id/addOutfit_btn"
+        android:id="@+id/saveOutfit_btn"
         android:layout_width="155dp"
         android:layout_height="50dp"
-        android:text="Add Outfit"
+        android:text="Save Outfit"
         android:textColor="#000"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -213,6 +213,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.954" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

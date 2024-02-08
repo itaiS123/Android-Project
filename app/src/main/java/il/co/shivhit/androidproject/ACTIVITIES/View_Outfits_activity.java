@@ -1,4 +1,4 @@
-package il.co.shivhit.androidproject;
+package il.co.shivhit.androidproject.ACTIVITIES;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import il.co.shivhit.androidproject.R;
 
 public class View_Outfits_activity extends AppCompatActivity {
     private Button returnBack_btn;

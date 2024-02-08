@@ -1,4 +1,4 @@
-package il.co.shivhit.androidproject;
+package il.co.shivhit.androidproject.ACTIVITIES;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import il.co.shivhit.androidproject.R;
 
 public class Outfits_activity extends AppCompatActivity {
     private Button viewOutfits_btn;

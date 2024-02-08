@@ -1,4 +1,4 @@
-package il.co.shivhit.androidproject;
+package il.co.shivhit.androidproject.ACTIVITIES;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import il.co.shivhit.androidproject.R;
 
 public class View_Wardrobe_activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner categoryFilter_spinner;

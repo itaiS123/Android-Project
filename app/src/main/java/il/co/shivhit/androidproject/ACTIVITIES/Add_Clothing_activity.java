@@ -1,4 +1,4 @@
-package il.co.shivhit.androidproject;
+package il.co.shivhit.androidproject.ACTIVITIES;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -8,17 +8,23 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.AndroidException;
+import android.util.Base64;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import java.io.ByteArrayOutputStream;
+
+import il.co.shivhit.androidproject.R;
+import il.co.shivhit.model.Cloth;
 
 public class Add_Clothing_activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private ImageView shirt_imgView;
@@ -75,6 +81,23 @@ public class Add_Clothing_activity extends AppCompatActivity implements AdapterV
                 }
             }
         });
+
+        addToWardrobe_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selectedCategory = category_spinner.getSelectedItem().toString();
+                String selectedColor = color_spinner.getSelectedItem().toString();
+
+                // Get the image from ImageView
+                Bitmap clothImage = ((BitmapDrawable)shirt_imgView.getDrawable()).getBitmap();
+
+
+                Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
+
+                // Now you can use the newCloth object as needed
+                // need to save in data base and display it in other activity
+            }
+        });
     }
 
     private void dispatchTakePictureIntent() {
@@ -106,5 +129,19 @@ public class Add_Clothing_activity extends AppCompatActivity implements AdapterV
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    // Method to convert Bitmap to String
+    public static String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    // Method to convert String to Bitmap
+    public static Bitmap stringToBitmap(String encodedString) {
+        byte[] decodedByteArray = Base64.decode(encodedString, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
     }
 }

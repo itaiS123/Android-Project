@@ -1,4 +1,4 @@
-package il.co.shivhit.androidproject;
+package il.co.shivhit.androidproject.ACTIVITIES;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import il.co.shivhit.androidproject.R;
+import il.co.shivhit.model.Cloth;
+import il.co.shivhit.model.Outfit;
 
 public class Make_Outfit_activity extends AppCompatActivity {
     private EditText name_et;
@@ -21,7 +25,7 @@ public class Make_Outfit_activity extends AppCompatActivity {
     private ImageButton left_arrow1_imgB;
     private ImageButton left_arrow2_imgB;
     private ImageButton left_arrow3_imgB;
-    private Button addOutfit_btn;
+    private Button saveOutfit_btn;
     private Button returnBack_btn;
 
     @Override
@@ -48,7 +52,7 @@ public class Make_Outfit_activity extends AppCompatActivity {
         right_arrow3_imgB = findViewById(R.id.right_arrow3_imgB);
 
 
-        addOutfit_btn = findViewById(R.id.addOutfit_btn);
+        saveOutfit_btn = findViewById(R.id.saveOutfit_btn);
         returnBack_btn = findViewById(R.id.returnBack_btn);
 
         returnBack_btn.setOnClickListener(new View.OnClickListener() {
@@ -57,5 +61,16 @@ public class Make_Outfit_activity extends AppCompatActivity {
                 finish();
             }
         });
+
+        //saveOutfit_btn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        if (description_et.getText() != null && name_et.getText() != null){
+        //            Cloth shirt = new Cloth();
+        //            Outfit outfit = new Outfit(,name_et.getText(), description_et.getText());
+        //        }
+
+        //    }
+        //});
     }
 }

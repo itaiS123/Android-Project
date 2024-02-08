@@ -17,13 +17,13 @@
         android:theme="@style/Theme.AndroidProject"
         tools:targetApi="31">
         <activity
-            android:name=".View_Outfits_activity"
+            android:name=".ACTIVITIES.View_Outfits_activity"
             android:exported="false" />
         <activity
-            android:name=".View_Wardrobe_activity"
+            android:name=".ACTIVITIES.View_Wardrobe_activity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ACTIVITIES.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,16 +32,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Add_Clothing_activity"
+            android:name=".ACTIVITIES.Add_Clothing_activity"
             android:exported="false" />
         <activity
-            android:name=".Wardrobe_activity"
+            android:name=".ACTIVITIES.Wardrobe_activity"
             android:exported="false" />
         <activity
-            android:name=".Make_Outfit_activity"
+            android:name=".ACTIVITIES.Make_Outfit_activity"
             android:exported="false" />
         <activity
-            android:name=".Outfits_activity"
+            android:name=".ACTIVITIES.Outfits_activity"
             android:exported="false" />
     </application>
 

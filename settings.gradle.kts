@@ -15,4 +15,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Android Project"
 include(":app")
- 
+include(":MODEL")
+include(":VIEWMODEL")
+include(":REPOSITORY")
