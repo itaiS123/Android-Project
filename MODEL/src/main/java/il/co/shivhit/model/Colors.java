@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 import java.util.List;
 
-public class Colors {
+public class Colors extends BaseList<Color, Colors>{
     private List<Color> colors;
     public Colors() {}
 

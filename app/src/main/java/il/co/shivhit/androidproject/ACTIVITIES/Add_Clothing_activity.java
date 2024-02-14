@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
@@ -121,11 +122,12 @@ public class Add_Clothing_activity extends AppCompatActivity implements AdapterV
         }
     }
 
+    //method that must be implemented because of Interface
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
     }
-
+    //method that must be implemented because of Interface
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
