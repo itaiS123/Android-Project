@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -75,12 +76,22 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         setObservers();
     }
 
-    public void setObservers(){
+    private void setObservers() {
+        GenericViewModelFactory<ClothViewModel> factory = new GenericViewModelFactory<>(getApplication(), ClothViewModel::new);
+        clothViewModel = new ViewModelProvider(this, factory).get(ClothViewModel.class);
+
         clothViewModel.getSuccessOperation().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-            if (aBoolean)
-            Toast.makeText(Add_Clothing_activity.this,"Saved successfully !",Toast.LENGTH_SHORT).show();}});
+                Log.d("ll", "on change");
+                if (aBoolean){
+                    Toast.makeText(Add_Clothing_activity.this, "Saved successfully!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(Add_Clothing_activity.this, "Error!!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     @Override
     protected void setListeners() {
@@ -116,7 +127,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
 
                 Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
                 clothViewModel.add(newCloth);
-
+                finish();
                 // need to save in data base and display it in other activity
             }
         });
