@@ -8,37 +8,28 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import il.co.shivhit.model.Cloth;
+import il.co.shivhit.repository.ClothRepository;
 
 public class ClothViewModel extends ViewModel{
     private MutableLiveData<Boolean> successOperation;
     private Context context;
     private ClothRepository repository;
 
-    private MutableLiveData<Cloth> clothLiveData;
-
-    public ClothViewModel(Context context) {
-
+    public ClothViewModel(Context context){
         successOperation = new MutableLiveData<>();
         this.context = context;
         repository = new ClothRepository(context);
-        blogPostsLiveData = new MutableLiveData<>();
     }
 
-    public LiveData<Boolean> getSuccessOperation() {
+    public void add(Cloth cloth){
+        repository.add(cloth)
+                .addOnSuccessListener(aBoolean ->
+                {successOperation.setValue(true);})
+                .addOnFailureListener(e ->
+                {successOperation.setValue(false);});
+    }
+
+    public LiveData<Boolean> getSuccessOperation(){
         return successOperation;
-    };
-
-    public void add(BlogPost blogPost){
-        Log.d("ll", "going to repository");
-        successOperation.setValue(true);
-        repository.add(blogPost)
-                .addOnSuccessListener(aBoolean -> {successOperation.setValue(true);})
-                .addOnFailureListener(e -> {successOperation.setValue(false);});
-        Log.d("ll", "after repository");
-    }
-
-    public LiveData<BlogPosts> getAll() {
-        clothLiveData = repository.getAll();
-        return clothLiveData;
     }
 }

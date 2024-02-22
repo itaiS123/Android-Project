@@ -1,6 +1,5 @@
 package il.co.shivhit.androidproject.ACTIVITIES;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
@@ -39,7 +38,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
     private Spinner category_spinner;
     private Spinner color_spinner;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private ClothViewModel blogsViewModel;
+    private ClothViewModel clothViewModel;
 
 
     @Override
@@ -49,7 +48,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         initializeViews();
 
         GenericViewModelFactory<ClothViewModel> factory = new GenericViewModelFactory<>(getApplication(), ClothViewModel::new);
-        blogsViewModel = new ViewModelProvider(this, factory).get(ClothViewModel.class);
+        clothViewModel = new ViewModelProvider(this, factory).get(ClothViewModel.class);
     }
 
     @Override
@@ -77,8 +76,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
     }
 
     public void setObservers(){
-
-        blogsViewModel.getSuccessOperation().observe(this, new Observer<Boolean>() {
+        clothViewModel.getSuccessOperation().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
             if (aBoolean)
@@ -117,6 +115,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
 
 
                 Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
+                clothViewModel.add(newCloth);
 
                 // need to save in data base and display it in other activity
             }
