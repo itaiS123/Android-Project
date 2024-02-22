@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import il.co.shivhit.androidproject.R;
 
-public class View_Outfits_activity extends AppCompatActivity {
+public class View_Outfits_activity extends BaseActivity {
     private Button returnBack_btn;
     private ImageButton trashBin_imgBtn;
 
@@ -18,12 +18,19 @@ public class View_Outfits_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_outfits);
-        InitViews();
+        initializeViews();
     }
 
-    private void InitViews() {
+    @Override
+    protected void initializeViews() {
         returnBack_btn = findViewById(R.id.returnBack_btn);
         trashBin_imgBtn = findViewById(R.id.trashBin_imgBtn);
+
+        setListeners();
+    }
+
+    @Override
+    protected void setListeners() {
         returnBack_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { finish();}

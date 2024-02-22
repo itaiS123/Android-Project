@@ -1,21 +1,11 @@
 package il.co.shivhit.model;
 
-public class Category {
-    private String id;
+public class Category extends BaseEntity {
     private String nameOfCategory;
     public Category() {}
 
-    public Category(String id, String nameOfCategory) {
-        this.id = id;
+    public Category(String nameOfCategory) {
         this.nameOfCategory = nameOfCategory;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getNameOfCategory() {

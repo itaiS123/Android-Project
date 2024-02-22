@@ -27,7 +27,7 @@ import java.io.ByteArrayOutputStream;
 import il.co.shivhit.androidproject.R;
 import il.co.shivhit.model.Cloth;
 
-public class Add_Clothing_activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Add_Clothing_activity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     private ImageView shirt_imgView;
     private ImageButton take_picture_imgBtn;
     private Button goBack_btn;
@@ -40,10 +40,11 @@ public class Add_Clothing_activity extends AppCompatActivity implements AdapterV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_clothing);
-        InitViews();
+        initializeViews();
     }
 
-    private void InitViews() {
+    @Override
+    protected void initializeViews() {
         shirt_imgView = findViewById(R.id.shirt_imgView);
         take_picture_imgBtn = findViewById(R.id.take_picture_imgBtn);
 
@@ -62,7 +63,11 @@ public class Add_Clothing_activity extends AppCompatActivity implements AdapterV
         adapter_category.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category_spinner.setAdapter(adapter_category);
         category_spinner.setOnItemSelectedListener(this);
+        setListeners();
+    }
 
+    @Override
+    protected void setListeners() {
         goBack_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,13 +98,15 @@ public class Add_Clothing_activity extends AppCompatActivity implements AdapterV
                 Bitmap clothImage = ((BitmapDrawable)shirt_imgView.getDrawable()).getBitmap();
 
 
-                Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
+                // Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
 
                 // Now you can use the newCloth object as needed
                 // need to save in data base and display it in other activity
             }
         });
     }
+
+
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -145,5 +152,10 @@ public class Add_Clothing_activity extends AppCompatActivity implements AdapterV
     public static Bitmap stringToBitmap(String encodedString) {
         byte[] decodedByteArray = Base64.decode(encodedString, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
 }

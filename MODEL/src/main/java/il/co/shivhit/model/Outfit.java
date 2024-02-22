@@ -1,6 +1,6 @@
 package il.co.shivhit.model;
 
-public class Outfit {
+public class Outfit extends BaseEntity {
     private Cloths cloths;
     private String nameOfOutfit;
     private String description;

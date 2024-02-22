@@ -13,7 +13,7 @@ import il.co.shivhit.androidproject.R;
 import il.co.shivhit.model.Cloth;
 import il.co.shivhit.model.Outfit;
 
-public class Make_Outfit_activity extends AppCompatActivity {
+public class Make_Outfit_activity extends BaseActivity {
     private EditText name_et;
     private EditText description_et;
     private ImageView shirt_imgV;
@@ -32,10 +32,11 @@ public class Make_Outfit_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_outfit);
-        InitViews();
+        initializeViews();
     }
 
-    private void InitViews() {
+    @Override
+    protected void initializeViews() {
         name_et = findViewById(R.id.name_et);
         description_et = findViewById(R.id.description_et);
 
@@ -51,10 +52,14 @@ public class Make_Outfit_activity extends AppCompatActivity {
         right_arrow2_imgB = findViewById(R.id.right_arrow2_imgB);
         right_arrow3_imgB = findViewById(R.id.right_arrow3_imgB);
 
-
         saveOutfit_btn = findViewById(R.id.saveOutfit_btn);
         returnBack_btn = findViewById(R.id.returnBack_btn);
 
+        setListeners();
+    }
+
+    @Override
+    protected void setListeners() {
         returnBack_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

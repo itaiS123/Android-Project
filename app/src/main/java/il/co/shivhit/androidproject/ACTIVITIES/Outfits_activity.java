@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import il.co.shivhit.androidproject.R;
 
-public class Outfits_activity extends AppCompatActivity {
+public class Outfits_activity extends BaseActivity {
     private Button viewOutfits_btn;
     private Button makeAnOutfit_btn;
     private Button returnBack_Btn;
@@ -21,13 +21,20 @@ public class Outfits_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outfits);
-        InitViews();
+        initializeViews();
     }
-    private void InitViews() {
+
+    @Override
+    protected void initializeViews() {
         returnBack_Btn = findViewById(R.id.returnBack_Btn);
         viewOutfits_btn = findViewById(R.id.viewOutfits_btn);
         makeAnOutfit_btn = findViewById(R.id.makeAnOutfit_btn);
 
+        setListeners();
+    }
+
+    @Override
+    protected void setListeners() {
         returnBack_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
