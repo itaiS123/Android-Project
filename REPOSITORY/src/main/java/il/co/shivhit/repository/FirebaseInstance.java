@@ -10,10 +10,10 @@ public class FirebaseInstance {
     public static FirebaseApp app;
     private FirebaseInstance(Context context) {
         FirebaseOptions options = new FirebaseOptions.Builder()
-                .setProjectId("")		// ApplicationId
-                .setApplicationId("")		// ProjectId
-                .setApiKey("")
-                .setStorageBucket("")
+                .setProjectId("android-project-edad2")		// ApplicationId
+                .setApplicationId("1:1054890786483:android:6a5f0c24a0e8501ca9fac6")		// ProjectId
+                .setApiKey("AIzaSyCd5C6rfLh8I_cp3vlIYDzdOhQz8rWsyJA")
+                .setStorageBucket("android-project-edad2.appspot.com")
                 .build();
 
         app = FirebaseApp.initializeApp(context, options);

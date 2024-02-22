@@ -3,6 +3,8 @@ package il.co.shivhit.androidproject.ACTIVITIES;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.Intent;
@@ -26,6 +28,8 @@ import java.io.ByteArrayOutputStream;
 
 import il.co.shivhit.androidproject.R;
 import il.co.shivhit.model.Cloth;
+import il.co.shivhit.viewmodel.ClothViewModel;
+import il.co.shivhit.viewmodel.GenericViewModelFactory;
 
 public class Add_Clothing_activity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     private ImageView shirt_imgView;
@@ -35,12 +39,17 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
     private Spinner category_spinner;
     private Spinner color_spinner;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private ClothViewModel blogsViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_clothing);
         initializeViews();
+
+        GenericViewModelFactory<ClothViewModel> factory = new GenericViewModelFactory<>(getApplication(), ClothViewModel::new);
+        blogsViewModel = new ViewModelProvider(this, factory).get(ClothViewModel.class);
     }
 
     @Override
@@ -64,8 +73,17 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         category_spinner.setAdapter(adapter_category);
         category_spinner.setOnItemSelectedListener(this);
         setListeners();
+        setObservers();
     }
 
+    public void setObservers(){
+
+        blogsViewModel.getSuccessOperation().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+            if (aBoolean)
+            Toast.makeText(Add_Clothing_activity.this,"Saved successfully !",Toast.LENGTH_SHORT).show();}});
+    }
     @Override
     protected void setListeners() {
         goBack_btn.setOnClickListener(new View.OnClickListener() {
