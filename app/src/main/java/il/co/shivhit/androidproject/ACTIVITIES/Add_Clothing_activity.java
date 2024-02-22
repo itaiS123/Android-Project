@@ -91,16 +91,15 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         addToWardrobe_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String selectedCategory = category_spinner.getSelectedItem().toString();
                 String selectedColor = color_spinner.getSelectedItem().toString();
+                String selectedCategory = category_spinner.getSelectedItem().toString();
 
                 // Get the image from ImageView
                 Bitmap clothImage = ((BitmapDrawable)shirt_imgView.getDrawable()).getBitmap();
 
 
-                // Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
+                Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
 
-                // Now you can use the newCloth object as needed
                 // need to save in data base and display it in other activity
             }
         });
