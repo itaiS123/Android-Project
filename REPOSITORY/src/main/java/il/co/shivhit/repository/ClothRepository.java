@@ -20,7 +20,7 @@ public class ClothRepository {
 
     public ClothRepository(){
         db = FirebaseFirestore.getInstance();
-        collection = db.collection("Cloth");
+        collection = db.collection("Cloths");
     }
 
     public ClothRepository(Context context){

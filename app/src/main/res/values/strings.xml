@@ -2,9 +2,11 @@
     <string name="app_name">Android Project</string>
 
     <string-array name="Category">
+        <item>Sweater &amp; Jacket</item>
         <item>Shirt</item>
         <item>Pants</item>
-        <item>Shoes</item>
+        <item>Shorts</item>
+        <item>Shoes &amp; Boots</item>
     </string-array>
 
     <string-array name="Colors">
