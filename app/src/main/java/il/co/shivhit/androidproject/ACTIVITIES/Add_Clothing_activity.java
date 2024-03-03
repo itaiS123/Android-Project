@@ -127,6 +127,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
 
                 Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
                 clothViewModel.add(newCloth);
+                Toast.makeText(Add_Clothing_activity.this, "Cloth Saved", Toast.LENGTH_SHORT).show();
                 finish();
                 // need to save in data base and display it in other activity
             }

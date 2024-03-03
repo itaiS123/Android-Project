@@ -11,7 +11,7 @@ import android.widget.Spinner;
 
 import il.co.shivhit.androidproject.R;
 
-public class View_Wardrobe_activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class View_Wardrobe_activity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     private Spinner categoryFilter_spinner;
     private Spinner colorFilter_spinner;
     private Button apply_btn;
@@ -20,11 +20,11 @@ public class View_Wardrobe_activity extends AppCompatActivity implements Adapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_wardrobe);
-        InitViews();
+        initializeViews();
     }
 
-    private void InitViews() {
-
+    @Override
+    protected void initializeViews() {
         colorFilter_spinner = findViewById(R.id.colorFilter_spinner);
         ArrayAdapter<CharSequence> adapter_colorFilter = ArrayAdapter.createFromResource(this, R.array.Colors, android.R.layout.simple_spinner_dropdown_item);
         adapter_colorFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -39,6 +39,14 @@ public class View_Wardrobe_activity extends AppCompatActivity implements Adapter
         categoryFilter_spinner.setOnItemSelectedListener(this);
 
         apply_btn = findViewById(R.id.apply_btn);
+        returnBack_btn = findViewById(R.id.returnBack_btn);
+
+
+        setListeners();
+    }
+
+    @Override
+    protected void setListeners() {
         apply_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,12 +54,13 @@ public class View_Wardrobe_activity extends AppCompatActivity implements Adapter
             }
         });
 
-        returnBack_btn = findViewById(R.id.returnBack_btn);
         returnBack_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { finish(); }
         });
     }
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

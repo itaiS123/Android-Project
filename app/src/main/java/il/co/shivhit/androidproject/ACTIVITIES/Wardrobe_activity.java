@@ -9,26 +9,35 @@ import android.widget.Button;
 
 import il.co.shivhit.androidproject.R;
 
-public class Wardrobe_activity extends AppCompatActivity {
+public class Wardrobe_activity extends BaseActivity {
     private Button goBack_btn;
     private Button addClothing_btn;
     private Button viewWardrobe_btn;
     private Intent addClothing_intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wardrobe);
-        InitViews();
+        initializeViews();
     }
 
-    private void InitViews() {
+    @Override
+    protected void initializeViews() {
         goBack_btn = findViewById(R.id.goBack_btn);
         addClothing_btn = findViewById(R.id.addClothing_btn);
         viewWardrobe_btn = findViewById(R.id.viewWardrobe_btn);
 
+        setListeners();
+    }
+
+    @Override
+    protected void setListeners() {
         goBack_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { finish(); }
+            public void onClick(View v) {
+                finish();
+            }
         });
 
         addClothing_btn.setOnClickListener(new View.OnClickListener() {
