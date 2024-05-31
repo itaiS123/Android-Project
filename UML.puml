@@ -1,0 +1,56 @@
+@startuml
+class Cloth {
+- String category
+- String color
+- String image
+}
+
+class BaseList {
+}
+class Cloths {
+}
+class BaseEntity {
+# String idfs
+}
+
+class Categories {
+}
+class Outfit {
+- Cloths cloths
+- String nameOfOutfit
+- String description
+}
+
+class Category {
+- String nameOfCategory
+}
+
+class Colors {
+}
+class Outfits {
+}
+class Color {
+- String name
+}
+
+class ExampleInstrumentedTest {
+}
+class ExampleUnitTest {
+}
+
+
+Serializable <|.. Cloth
+BaseEntity <|-- Cloth
+ArrayList <|-- BaseList
+BaseList <|-- Cloths
+Serializable <|.. BaseEntity
+BaseList <|-- Categories
+Serializable <|.. Outfit
+BaseEntity <|-- Outfit
+Serializable <|.. Category
+BaseEntity <|-- Category
+BaseList <|-- Colors
+BaseList <|-- Outfits
+Serializable <|.. Color
+BaseEntity <|-- Color
+@enduml

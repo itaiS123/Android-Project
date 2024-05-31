@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1054890786483",
+    "project_id": "android-project-edad2",
+    "storage_bucket": "android-project-edad2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054890786483:android:6a5f0c24a0e8501ca9fac6",
+        "android_client_info": {
+          "package_name": "il.co.shivhit.REPOSITORY"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd5C6rfLh8I_cp3vlIYDzdOhQz8rWsyJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

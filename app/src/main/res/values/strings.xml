@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Android Project</string>
+
+    <string-array name="Category">
+        <item>Sweater &amp; Shirt</item>
+        <item>Pants &amp; Shorts</item>
+        <item>Shoes &amp; Boots &amp; Flip-Flops</item>
+
+    </string-array>
+
+    <string-array name="Colors">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Blue</item>
+        <item>Yellow</item>
+        <item>Purple</item>
+        <item>Pink</item>
+        <item>Black</item>
+        <item>White</item>
+        <item>Silver</item>
+        <item>Gold</item>
+    </string-array>
+</resources>
