@@ -50,6 +50,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
     private TextToSpeech textToSpeech;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_GALLERY = 2;
+    private static final int REQUEST_CAMERA_PERMISSION = 100;
 
 
     @Override
@@ -124,8 +125,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+                           takePicture();
                         } else {
                             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(galleryIntent, REQUEST_IMAGE_GALLERY);
@@ -254,5 +254,16 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         }
 
         return true;
+    }
+
+    public void takePicture() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request it
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+        } else {
+            // Permission is granted, start the camera intent
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 }

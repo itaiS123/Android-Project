@@ -54,6 +54,10 @@ public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ClothHolder>
         }
     }
 
+    public Cloth getClothByPosition(int index){
+        return cloths.get(index);
+    }
+
     @Override
     public int getItemCount() {
         return (cloths != null) ? cloths.size() : 0;

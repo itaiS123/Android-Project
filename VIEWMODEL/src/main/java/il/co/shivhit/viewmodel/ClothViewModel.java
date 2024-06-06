@@ -76,7 +76,6 @@ public class ClothViewModel extends AndroidViewModel {
     }
 
     public LiveData<Cloths> filter(String category, String color){
-        clothsLiveData = new MutableLiveData<>();
         repository.filter(category, color)
                 .addOnSuccessListener(cloths -> clothsLiveData.setValue(cloths))
                 .addOnFailureListener(e -> clothsLiveData.setValue(null));
@@ -112,7 +111,6 @@ public class ClothViewModel extends AndroidViewModel {
 
         return clothsLiveData;
     }
-
 
     public MutableLiveData<Cloths> getClothsLiveData() {
         return clothsLiveData;

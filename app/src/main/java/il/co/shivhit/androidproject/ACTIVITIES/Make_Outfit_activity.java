@@ -19,7 +19,9 @@ import ADAPTERS.ClothAdapter;
 import il.co.shivhit.androidproject.R;
 import il.co.shivhit.model.Cloth;
 import il.co.shivhit.model.Cloths;
+import il.co.shivhit.model.Outfit;
 import il.co.shivhit.viewmodel.ClothViewModel;
+import il.co.shivhit.viewmodel.OutfitViewModel;
 
 public class Make_Outfit_activity extends BaseActivity {
     private EditText name_et;
@@ -41,6 +43,8 @@ public class Make_Outfit_activity extends BaseActivity {
     private Cloths cloths_shoes;
     private RecyclerView shoes_rv;
     private ClothAdapter clothAdapter_shoes;
+
+    private OutfitViewModel outfitViewModel;
 
 
     @Override
@@ -71,6 +75,8 @@ public class Make_Outfit_activity extends BaseActivity {
         shoes_rv = findViewById(R.id.shoes_rv);
         cloths_shoes = new Cloths();
         clothViewModel_shoes = new ViewModelProvider(this).get(ClothViewModel.class);
+
+        outfitViewModel = new ViewModelProvider(this).get(OutfitViewModel.class);
         setListeners();
     }
     private void setObservers(){
@@ -98,6 +104,17 @@ public class Make_Outfit_activity extends BaseActivity {
             }
         });
 
+        outfitViewModel.getSuccessOperation().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                    Toast.makeText(getApplicationContext(), "good", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "bad", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void setRecyclerView() {
@@ -150,8 +167,31 @@ public class Make_Outfit_activity extends BaseActivity {
         saveOutfit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (description_et.getText() != null && name_et.getText() != null){
+                if (!description_et.getText().toString().isEmpty() && !name_et.getText().toString().isEmpty()){
+                    LinearLayoutManager layoutManager_shirt = (LinearLayoutManager)shirt_rv.getLayoutManager();
+                    int firstVisibleItemPosition_shirt = layoutManager_shirt.findFirstVisibleItemPosition();
+                    Cloth shirt = clothAdapter_shirt.getClothByPosition(firstVisibleItemPosition_shirt);
 
+                    LinearLayoutManager layoutManager_pants = (LinearLayoutManager)pants_rv.getLayoutManager();
+                    int firstVisibleItemPosition_pants = layoutManager_pants.findFirstVisibleItemPosition();
+                    Cloth pants = clothAdapter_shirt.getClothByPosition(firstVisibleItemPosition_pants);
+
+                    LinearLayoutManager layoutManager_shoes = (LinearLayoutManager)shoes_rv.getLayoutManager();
+                    int firstVisibleItemPosition_shoes = layoutManager_shoes.findFirstVisibleItemPosition();
+                    Cloth shoes = clothAdapter_shoes.getClothByPosition(firstVisibleItemPosition_shoes);
+
+                    Cloths cloths = new Cloths();
+                    cloths.add(shirt);
+                    cloths.add(pants);
+                    cloths.add(shoes);
+
+                    Outfit outfit = new Outfit(cloths, name_et.getText().toString(), description_et.getText().toString());
+                    outfitViewModel.add(outfit);
+
+                    //Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Please insert valid values", Toast.LENGTH_SHORT).show();
                 }
            }
         });
