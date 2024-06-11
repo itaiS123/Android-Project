@@ -3,12 +3,14 @@ package il.co.shivhit.androidproject.ACTIVITIES;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import il.co.shivhit.androidproject.R;
 
@@ -18,7 +20,9 @@ public class MainActivity extends BaseActivity {
     private Intent outfits_intent;
     private Intent wardrobe_intent;
 
-    @Override
+    private static MediaPlayer player;
+    private final int musicResourceId = R.raw.mp3;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -28,10 +32,20 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
     }
 
+
+
     @Override
     protected void initializeViews() {
         outfits_btn = findViewById(R.id.outfits_btn);
         wardrobe_btn = findViewById(R.id.wardrobe_btn);
+
+        // Create media player (check for null)
+        player = MediaPlayer.create(this, musicResourceId);
+        if (player != null) {
+            player.setLooping(true); // Set looping for continuous playback
+        } else {
+            Toast.makeText(this, "Error creating media player", Toast.LENGTH_SHORT).show();
+        }
         setListeners();
     }
 
@@ -53,7 +67,6 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -66,13 +79,22 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
         if (item.getItemId() == R.id.enable_Music) {
-            Intent intent = new Intent(this, BackGraound_service.class);
-            startService(intent);
+            if (player != null) {
+                player.start();
+            }
         } else if (item.getItemId() == R.id.disable_Music) {
-            Intent intent = new Intent(this, BackGraound_service.class);
-            stopService(intent);
+            if (player != null) {
+                player.pause();
+            }
+        } else if (item.getItemId() == R.id.enable_Music) { // Handle intent from Wardrobe activity
+            if (player != null) {
+                player.start();
+            }
+        } else if (item.getItemId() == R.id.disable_Music) { // Handle intent from Wardrobe activity
+            if (player != null) {
+                player.pause();
+            }
         }
         return true;
     }

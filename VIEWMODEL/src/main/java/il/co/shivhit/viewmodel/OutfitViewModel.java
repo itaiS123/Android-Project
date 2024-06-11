@@ -57,6 +57,7 @@ public class OutfitViewModel extends AndroidViewModel {
     public LiveData<Boolean> getSuccessOperation() {
         return successOperation;
     }
+    public LiveData<Outfits> getOutfitsLiveData() {return outfitsLiveData; }
     public LiveData<Outfits> getAll() {
         repository.getAll()
                 .addOnSuccessListener(cloths -> outfitsLiveData.setValue(cloths))

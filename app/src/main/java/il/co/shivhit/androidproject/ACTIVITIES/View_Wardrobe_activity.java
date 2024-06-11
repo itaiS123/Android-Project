@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.Locale;
 
 import ADAPTERS.ClothAdapter;
 import il.co.shivhit.androidproject.R;
@@ -38,6 +41,8 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
     private RecyclerView filter_rv;
     private ClothAdapter clothAdapter;
 
+    private TextToSpeech textToSpeech;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,17 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
         initializeViews();
         setRecyclerView();
         setObservers();
+
+        // Initialize TextToSpeech
+        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // Set language (optional)
+                    textToSpeech.setLanguage(Locale.US); // Change Locale for different languages
+                }
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -84,6 +100,7 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         deleteCloth(cloth);
+                                        speakText("Cloth successfully deleted");
                                         Toast.makeText(View_Wardrobe_activity.this, "Cloth deleted", Toast.LENGTH_SHORT).show();
                                     }
                                 })
@@ -177,5 +194,19 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
         }
 
         return true;
+    }
+
+    public void speakText(String text) {
+        if (textToSpeech != null && textToSpeech.isSpeaking() == false) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null); // Speak the text
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (textToSpeech != null) {
+            textToSpeech.shutdown();
+        }
     }
 }

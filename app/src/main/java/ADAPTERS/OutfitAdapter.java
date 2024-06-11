@@ -18,21 +18,16 @@ public class OutfitAdapter extends RecyclerView.Adapter<OutfitAdapter.OutfitHold
     private String outfit_name;
     private Outfits outfits;
     private int single_outfit_name;
-    private OnItemClickListener listener;
     private OnItemLongClickListener longListener;
-    public interface OnItemClickListener {
-        void onItemClicked(Outfit outfit);
-    }
     public interface OnItemLongClickListener {
         boolean onItemLongClicked(Outfit outfit);
     }
 
-    public OutfitAdapter(Context context, String outfit_name, Outfits outfits, int single_outfit_name, OnItemClickListener listener, OnItemLongClickListener longListener) {
+    public OutfitAdapter(Context context, Outfits outfits, int single_outfit_name, OnItemLongClickListener longListener) {
         this.context = context;
         this.outfit_name = outfit_name;
         this.outfits = outfits;
         this.single_outfit_name = single_outfit_name;
-        this.listener = listener;
         this.longListener = longListener;
     }
 
@@ -46,8 +41,13 @@ public class OutfitAdapter extends RecyclerView.Adapter<OutfitAdapter.OutfitHold
     public void onBindViewHolder(@NonNull OutfitHolder holder, int position) {
         Outfit outfit = outfits.get(position);
         if (outfit != null) {
-            holder.bind(outfit, listener, longListener);
+            holder.bind(outfit,longListener);
         }
+    }
+
+    public void setOutfits(Outfits outfits){
+        this.outfits = outfits;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -61,14 +61,7 @@ public class OutfitAdapter extends RecyclerView.Adapter<OutfitAdapter.OutfitHold
             outfitName_tv = itemView.findViewById(R.id.outfitName_tv);
         }
 
-        public void bind(Outfit outfit, OnItemClickListener listener, OnItemLongClickListener longListener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null)
-                        listener.onItemClicked(outfit);
-                }
-            });
+        public void bind(Outfit outfit, OnItemLongClickListener longListener) {
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -77,6 +70,7 @@ public class OutfitAdapter extends RecyclerView.Adapter<OutfitAdapter.OutfitHold
                     return false;
                 }
             });
+            outfitName_tv.setText(outfit.getNameOfOutfit().toString());
         }
     }
 }

@@ -3,17 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#333">
 
     <TextView
         android:id="@+id/outfitName_tv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="157dp"
         android:gravity="center"
-        android:textSize="50sp"
         android:text="TextView"
+        android:textColor="#ffffff"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.478" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

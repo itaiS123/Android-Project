@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 import ADAPTERS.ClothAdapter;
 import il.co.shivhit.androidproject.R;
 import il.co.shivhit.model.Cloth;
@@ -22,6 +26,7 @@ import il.co.shivhit.model.Cloths;
 import il.co.shivhit.model.Outfit;
 import il.co.shivhit.viewmodel.ClothViewModel;
 import il.co.shivhit.viewmodel.OutfitViewModel;
+
 
 public class Make_Outfit_activity extends BaseActivity {
     private EditText name_et;
@@ -46,11 +51,30 @@ public class Make_Outfit_activity extends BaseActivity {
 
     private OutfitViewModel outfitViewModel;
 
+    private Cloth shirt;
+    private Cloth pants;
+    private Cloth shoes;
+
+    private TextToSpeech textToSpeech;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_outfit);
+
+        // Initialize TextToSpeech
+        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // Set language (optional)
+                    textToSpeech.setLanguage(Locale.US); // Change Locale for different languages
+                }
+            }
+        });
+
         initializeViews();
         setObservers();
         setRecyclerView();
@@ -96,7 +120,7 @@ public class Make_Outfit_activity extends BaseActivity {
             }
         });
 
-        clothViewModel_shirt.getShitsLiveData().observe(this, new Observer<Cloths>() {
+        clothViewModel_shirt.getShirtsLiveData().observe(this, new Observer<Cloths>() {
             @Override
             public void onChanged(Cloths cloths) {
                 Log.d("qqq", "Observe Shits: " + String.valueOf(cloths.size()));
@@ -108,10 +132,9 @@ public class Make_Outfit_activity extends BaseActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
-                    Toast.makeText(getApplicationContext(), "good", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "bad", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Outfit saved", Toast.LENGTH_SHORT).show();
+                    // make textToSpeech
+                    finish();
                 }
             }
         });
@@ -125,23 +148,43 @@ public class Make_Outfit_activity extends BaseActivity {
                         Toast.makeText(Make_Outfit_activity.this, "Click", Toast.LENGTH_SHORT).show();
                     }};
 
-        ClothAdapter.OnItemLongClickListener longListener =
+        ClothAdapter.OnItemLongClickListener longListener_shirt =
                 new ClothAdapter.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClicked(Cloth cloth) {
-                        Toast.makeText(Make_Outfit_activity.this, " long Click", Toast.LENGTH_SHORT).show();
+                        shirt = cloth;
+                        Toast.makeText(Make_Outfit_activity.this, " Cloth saved (shirt)", Toast.LENGTH_SHORT).show();
                         return true;
                     }};
 
-        clothAdapter_shirt = new ClothAdapter(this, cloths_shirt, R.layout.single_cloth_filter, listener, longListener);
+        ClothAdapter.OnItemLongClickListener longListener_pants =
+                new ClothAdapter.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClicked(Cloth cloth) {
+                        pants = cloth;
+                        Toast.makeText(Make_Outfit_activity.this, " Cloth saved (pants)", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }};
+
+        ClothAdapter.OnItemLongClickListener longListener_shoes =
+                new ClothAdapter.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClicked(Cloth cloth) {
+                        shoes = cloth;
+                        Toast.makeText(Make_Outfit_activity.this, " Cloth saved (shoes)", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }};
+
+
+        clothAdapter_shirt = new ClothAdapter(this, cloths_shirt, R.layout.single_cloth_filter, listener, longListener_shirt);
         shirt_rv.setAdapter(clothAdapter_shirt);
         shirt_rv.setLayoutManager(new LinearLayoutManager(this));
 
-        clothAdapter_pants = new ClothAdapter(this, cloths_pants, R.layout.single_cloth_filter, listener, longListener);
+        clothAdapter_pants = new ClothAdapter(this, cloths_pants, R.layout.single_cloth_filter, listener, longListener_pants);
         pants_rv.setAdapter(clothAdapter_pants);
         pants_rv.setLayoutManager(new LinearLayoutManager(this));
 
-        clothAdapter_shoes = new ClothAdapter(this, cloths_shoes, R.layout.single_cloth_filter, listener, longListener);
+        clothAdapter_shoes = new ClothAdapter(this, cloths_shoes, R.layout.single_cloth_filter, listener, longListener_shoes);
         shoes_rv.setAdapter(clothAdapter_shoes);
         shoes_rv.setLayoutManager(new LinearLayoutManager(this));
 
@@ -168,18 +211,6 @@ public class Make_Outfit_activity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (!description_et.getText().toString().isEmpty() && !name_et.getText().toString().isEmpty()){
-                    LinearLayoutManager layoutManager_shirt = (LinearLayoutManager)shirt_rv.getLayoutManager();
-                    int firstVisibleItemPosition_shirt = layoutManager_shirt.findFirstVisibleItemPosition();
-                    Cloth shirt = clothAdapter_shirt.getClothByPosition(firstVisibleItemPosition_shirt);
-
-                    LinearLayoutManager layoutManager_pants = (LinearLayoutManager)pants_rv.getLayoutManager();
-                    int firstVisibleItemPosition_pants = layoutManager_pants.findFirstVisibleItemPosition();
-                    Cloth pants = clothAdapter_shirt.getClothByPosition(firstVisibleItemPosition_pants);
-
-                    LinearLayoutManager layoutManager_shoes = (LinearLayoutManager)shoes_rv.getLayoutManager();
-                    int firstVisibleItemPosition_shoes = layoutManager_shoes.findFirstVisibleItemPosition();
-                    Cloth shoes = clothAdapter_shoes.getClothByPosition(firstVisibleItemPosition_shoes);
-
                     Cloths cloths = new Cloths();
                     cloths.add(shirt);
                     cloths.add(pants);
@@ -188,8 +219,18 @@ public class Make_Outfit_activity extends BaseActivity {
                     Outfit outfit = new Outfit(cloths, name_et.getText().toString(), description_et.getText().toString());
                     outfitViewModel.add(outfit);
 
-                    //Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    speakText("Cloth successfully saved");
+
+                    // Handler to delay finish
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 1500);
                 }
+
                 else {
                     Toast.makeText(getApplicationContext(), "Please insert valid values", Toast.LENGTH_SHORT).show();
                 }
@@ -214,5 +255,19 @@ public class Make_Outfit_activity extends BaseActivity {
         }
 
         return true;
+    }
+
+    public void speakText(String text) {
+        if (textToSpeech != null && textToSpeech.isSpeaking() == false) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null); // Speak the text
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (textToSpeech != null) {
+            textToSpeech.shutdown();
+        }
     }
 }

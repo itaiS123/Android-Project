@@ -22,7 +22,7 @@ public class ClothViewModel extends AndroidViewModel {
     private ClothRepository repository;
     private MutableLiveData<Cloths> clothsLiveData;
 
-    private MutableLiveData<Cloths> shitsLiveData;
+    private MutableLiveData<Cloths> shirtsLiveData;
     private MutableLiveData<Cloths> pantsLiveData;
     private MutableLiveData<Cloths> showsLiveData;
 
@@ -32,7 +32,7 @@ public class ClothViewModel extends AndroidViewModel {
         successOperation = new MutableLiveData<>();
         clothsLiveData = new MutableLiveData<>();
 
-        shitsLiveData = new MutableLiveData<>();
+        shirtsLiveData = new MutableLiveData<>();
         pantsLiveData = new MutableLiveData<>();
         showsLiveData = new MutableLiveData<>();
     }
@@ -93,7 +93,7 @@ public class ClothViewModel extends AndroidViewModel {
                         //clothsLiveData.setValue(cloths);
 
                         if (category.equals("Sweater & Shirt"))
-                            shitsLiveData.setValue(cloths);
+                            shirtsLiveData.setValue(cloths);
 
                         if (category.equals("Pants & Shorts"))
                             pantsLiveData.setValue(cloths);
@@ -116,9 +116,7 @@ public class ClothViewModel extends AndroidViewModel {
         return clothsLiveData;
     }
 
-    public MutableLiveData<Cloths> getShitsLiveData(){
-        return shitsLiveData;
-    }
+    public MutableLiveData<Cloths> getShirtsLiveData(){ return shirtsLiveData; }
 
     public MutableLiveData<Cloths> getPantsLiveData(){
         return pantsLiveData;

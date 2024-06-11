@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.util.Base64;
@@ -39,7 +40,7 @@ import il.co.shivhit.model.Cloth;
 import il.co.shivhit.viewmodel.ClothViewModel;
 import il.co.shivhit.viewmodel.GenericViewModelFactory;
 
-public class Add_Clothing_activity extends BaseActivity implements AdapterView.OnItemSelectedListener, TextToSpeech.OnInitListener {
+public class Add_Clothing_activity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     private ImageView shirt_imgView;
     private ImageButton take_picture_imgBtn;
     private Button goBack_btn;
@@ -60,8 +61,16 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         initializeViews();
         setObservers();
 
-        // Initialize TextToSpeech engine
-        textToSpeech = new TextToSpeech(this, this);
+        // Initialize TextToSpeech
+        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // Set language (optional)
+                    textToSpeech.setLanguage(Locale.US); // Change Locale for different languages
+                }
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -149,41 +158,32 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
                 Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
                 clothViewModel.add(newCloth);
 
-                // Speak "Cloth saved"
-                speak("Cloth saved");
-                finish();
+                speakText("Cloth successfully saved");
+
+                // Handler to delay finish
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 1500); // Adjust delay time (in milliseconds) as needed
             }
         });
     }
 
-    @Override
-    public void onInit(int status) {
-        if (status == TextToSpeech.SUCCESS) {
-            // Set language for TextToSpeech
-            int result = textToSpeech.setLanguage(Locale.US);
-
-            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "Initialization failed", Toast.LENGTH_SHORT).show();
+    public void speakText(String text) {
+        if (textToSpeech != null && textToSpeech.isSpeaking() == false) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null); // Speak the text
         }
     }
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (textToSpeech != null) {
-            textToSpeech.stop();
             textToSpeech.shutdown();
         }
-        super.onDestroy();
-    }
-
-    private void speak(String text) {
-        // Speak the provided text
-        float speechRate = 0.5f;
-        textToSpeech.setSpeechRate(speechRate);
-        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     private void dispatchTakePictureIntent() {

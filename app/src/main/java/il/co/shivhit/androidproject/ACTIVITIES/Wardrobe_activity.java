@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,11 @@ public class Wardrobe_activity extends BaseActivity {
     private Button viewWardrobe_btn;
     private Intent addClothing_intent;
 
+    private static MediaPlayer player;
+    private final int musicResourceId = R.raw.mp3;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,14 @@ public class Wardrobe_activity extends BaseActivity {
         goBack_btn = findViewById(R.id.goBack_btn);
         addClothing_btn = findViewById(R.id.addClothing_btn);
         viewWardrobe_btn = findViewById(R.id.viewWardrobe_btn);
+
+        // Create media player (check for null)
+        player = MediaPlayer.create(this, musicResourceId);
+        if (player != null) {
+            player.setLooping(true); // Set looping for continuous playback
+        } else {
+            Toast.makeText(this, "Error creating media player", Toast.LENGTH_SHORT).show();
+        }
 
         setListeners();
     }
@@ -65,6 +79,7 @@ public class Wardrobe_activity extends BaseActivity {
         });
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
@@ -72,15 +87,27 @@ public class Wardrobe_activity extends BaseActivity {
         inflater.inflate(R.menu.music_menu, menu);
         return true;
     }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
         if (item.getItemId() == R.id.enable_Music) {
-            Toast.makeText(this, "Enable Music:", Toast.LENGTH_SHORT).show();
+            if (player != null) {
+                player.start();
+            }
         } else if (item.getItemId() == R.id.disable_Music) {
-            Toast.makeText(this, "Disable Music", Toast.LENGTH_SHORT).show();
+            if (player != null) {
+                player.pause();
+            }
+        } else if (item.getItemId() == R.id.enable_Music) { // Handle intent from Wardrobe activity
+            if (player != null) {
+                player.start();
+            }
+        } else if (item.getItemId() == R.id.disable_Music) { // Handle intent from Wardrobe activity
+            if (player != null) {
+                player.pause();
+            }
         }
-
         return true;
     }
 }
