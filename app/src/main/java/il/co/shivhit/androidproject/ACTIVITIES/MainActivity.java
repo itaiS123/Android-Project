@@ -1,6 +1,6 @@
 package il.co.shivhit.androidproject.ACTIVITIES;
 
-import androidx.appcompat.widget.Toolbar;
+import static android.widget.Toast.LENGTH_SHORT;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
 
 import il.co.shivhit.androidproject.R;
 
@@ -32,8 +34,6 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
     }
 
-
-
     @Override
     protected void initializeViews() {
         outfits_btn = findViewById(R.id.outfits_btn);
@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
         if (player != null) {
             player.setLooping(true); // Set looping for continuous playback
         } else {
-            Toast.makeText(this, "Error creating media player", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error creating media player", LENGTH_SHORT).show();
         }
         setListeners();
     }
@@ -67,6 +67,7 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -79,23 +80,29 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        if (item.getItemId() == R.id.enable_Music) {
-            if (player != null) {
+        if (player != null) {
+            if (item.getItemId() == R.id.enable_Music) {
                 player.start();
-            }
-        } else if (item.getItemId() == R.id.disable_Music) {
-            if (player != null) {
-                player.pause();
-            }
-        } else if (item.getItemId() == R.id.enable_Music) { // Handle intent from Wardrobe activity
-            if (player != null) {
-                player.start();
-            }
-        } else if (item.getItemId() == R.id.disable_Music) { // Handle intent from Wardrobe activity
-            if (player != null) {
+            } else if (item.getItemId() == R.id.disable_Music) {
                 player.pause();
             }
         }
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (player != null && player.isPlaying()) {
+            player.pause(); // Pause music when activity goes in background
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (player != null) { // Resume music if player exists and activity is in foreground
+            player.start();
+        }
     }
 }

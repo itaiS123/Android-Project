@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import il.co.shivhit.androidproject.R;
 
-public class Wardrobe_activity extends BaseActivity {
+public class Wardrobe_activity extends BaseActivity { // Inherits from BaseActivity
     private Button goBack_btn;
     private Button addClothing_btn;
     private Button viewWardrobe_btn;
@@ -42,12 +42,11 @@ public class Wardrobe_activity extends BaseActivity {
         addClothing_btn = findViewById(R.id.addClothing_btn);
         viewWardrobe_btn = findViewById(R.id.viewWardrobe_btn);
 
-        // Create media player (check for null)
         player = MediaPlayer.create(this, musicResourceId);
         if (player != null) {
-            player.setLooping(true); // Set looping for continuous playback
+            player.setLooping(true);
         } else {
-            Toast.makeText(this, "Error creating media player", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Wardrobe_activity.this, "Error creating media player", Toast.LENGTH_SHORT).show();
         }
 
         setListeners();
@@ -91,23 +90,29 @@ public class Wardrobe_activity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        if (item.getItemId() == R.id.enable_Music) {
-            if (player != null) {
+        if (player != null) {
+            if (item.getItemId() == R.id.enable_Music) {
                 player.start();
-            }
-        } else if (item.getItemId() == R.id.disable_Music) {
-            if (player != null) {
-                player.pause();
-            }
-        } else if (item.getItemId() == R.id.enable_Music) { // Handle intent from Wardrobe activity
-            if (player != null) {
-                player.start();
-            }
-        } else if (item.getItemId() == R.id.disable_Music) { // Handle intent from Wardrobe activity
-            if (player != null) {
+            } else if (item.getItemId() == R.id.disable_Music) {
                 player.pause();
             }
         }
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (player != null && player.isPlaying()) {
+            player.pause(); // Pause music when activity goes in background
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (player != null) { // Resume music if player exists and activity is in foreground
+            player.start();
+        }
     }
 }
