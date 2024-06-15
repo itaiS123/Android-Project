@@ -10,99 +10,75 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import il.co.shivhit.androidproject.R;
+import il.co.shivhit.model.AppUser;
+import il.co.shivhit.viewmodel.AppUserViewModel;
+import il.co.shivhit.viewmodel.GenericViewModelFactory;
 
 public class MainActivity extends BaseActivity {
-    private Button wardrobe_btn;
-    private Button outfits_btn;
-    private Intent outfits_intent;
-    private Intent wardrobe_intent;
+    private Button register_btn;
+    private Button logIn_btn;
+    private EditText username_et;
+    private EditText password_et;
+    private AppUserViewModel appUserViewModel;
 
-    private static MediaPlayer player;
-    private final int musicResourceId = R.raw.mp3;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeViews();
-
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
     }
 
     @Override
     protected void initializeViews() {
-        outfits_btn = findViewById(R.id.outfits_btn);
-        wardrobe_btn = findViewById(R.id.wardrobe_btn);
+        logIn_btn = findViewById(R.id.logIn_btn);
+        register_btn = findViewById(R.id.register_btn);
 
-        // Create media player (check for null)
-        player = MediaPlayer.create(this, musicResourceId);
-        if (player != null) {
-            player.setLooping(true); // Set looping for continuous playback
-        } else {
-            Toast.makeText(this, "Error creating media player", LENGTH_SHORT).show();
-        }
+        password_et = findViewById(R.id.password_et);
+        username_et = findViewById(R.id.username_et);
+
+        GenericViewModelFactory<AppUserViewModel> factory = new GenericViewModelFactory<>(getApplication(), AppUserViewModel::new);
+        appUserViewModel = new ViewModelProvider(this, factory).get(AppUserViewModel.class);
+
+        setObservers();
         setListeners();
     }
 
     @Override
     protected void setListeners() {
-        outfits_btn.setOnClickListener(new View.OnClickListener() {
+        register_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                outfits_intent = new Intent(MainActivity.this, Outfits_activity.class);
-                startActivityForResult(outfits_intent, 1);
+                AppUser appUser = new AppUser(username_et.getText().toString(), password_et.getText().toString());
+                appUserViewModel.add(appUser);
             }
         });
 
-        wardrobe_btn.setOnClickListener(new View.OnClickListener() {
+        logIn_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wardrobe_intent = new Intent(MainActivity.this, Wardrobe_activity.class);
-                startActivityForResult(wardrobe_intent, 2);
+
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.music_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-        if (player != null) {
-            if (item.getItemId() == R.id.enable_Music) {
-                player.start();
-            } else if (item.getItemId() == R.id.disable_Music) {
-                player.pause();
+    private void setObservers(){
+        appUserViewModel.getSuccessOperation().observe(MainActivity.this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isSuccess) {
+                if (isSuccess) {
+                    Toast.makeText(MainActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Failed to save user", Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-        return true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (player != null && player.isPlaying()) {
-            player.pause(); // Pause music when activity goes in background
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (player != null) { // Resume music if player exists and activity is in foreground
-            player.start();
-        }
+        });
     }
 }
