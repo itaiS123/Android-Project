@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.Menu;
@@ -177,6 +178,7 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
 
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
@@ -184,13 +186,24 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
         inflater.inflate(R.menu.music_menu, menu);
         return true;
     }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
+        if (Main_Page_Activity.player != null) {
+            if (item.getItemId() == R.id.enable_Music) {
+                Main_Page_Activity.player.start();
+            } else if (item.getItemId() == R.id.disable_Music) {
+                Main_Page_Activity.player.pause();
+            }
+        }
 
-        if (item.getItemId() == R.id.enable_Music) {
-            Toast.makeText(this, "Enable Music:", Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == R.id.disable_Music) {
-            Toast.makeText(this, "Disable Music", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.logOut_item) {
+            SharedPreferences preferences = getSharedPreferences("Android-Project", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("remember", false);
+            editor.apply();
+            finish();
         }
 
         return true;

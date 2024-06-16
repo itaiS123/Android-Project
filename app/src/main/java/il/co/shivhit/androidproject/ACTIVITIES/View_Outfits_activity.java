@@ -1,13 +1,18 @@
 package il.co.shivhit.androidproject.ACTIVITIES;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
@@ -49,8 +54,13 @@ public class View_Outfits_activity extends BaseActivity {
     protected void initializeViews() {
         returnBack_btn = findViewById(R.id.returnBack_btn);
         listOfOutfits_rv = findViewById(R.id.listOfOutfits_rv);
+
         outfits = new Outfits();
         viewModel = new ViewModelProvider(this).get(OutfitViewModel.class);
+
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+
         setListeners();
     }
     private void setObservers() {
@@ -80,5 +90,34 @@ public class View_Outfits_activity extends BaseActivity {
             @Override
             public void onClick(View v) { finish();}
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.music_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (Main_Page_Activity.player != null) {
+            if (item.getItemId() == R.id.enable_Music) {
+                Main_Page_Activity.player.start();
+            } else if (item.getItemId() == R.id.disable_Music) {
+                Main_Page_Activity.player.pause();
+            }
+        }
+
+        if (item.getItemId() == R.id.logOut_item) {
+            SharedPreferences preferences = getSharedPreferences("Android-Project", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("remember", false);
+            editor.apply();
+            finish();
+        }
+        return true;
     }
 }

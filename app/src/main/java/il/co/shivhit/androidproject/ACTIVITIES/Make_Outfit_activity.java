@@ -1,10 +1,12 @@
 package il.co.shivhit.androidproject.ACTIVITIES;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
@@ -101,13 +103,16 @@ public class Make_Outfit_activity extends BaseActivity {
         clothViewModel_shoes = new ViewModelProvider(this).get(ClothViewModel.class);
 
         outfitViewModel = new ViewModelProvider(this).get(OutfitViewModel.class);
+
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+
         setListeners();
     }
     private void setObservers(){
         clothViewModel_pants.getPantsLiveData().observe(this, new Observer<Cloths>() {
             @Override
             public void onChanged(Cloths cloths) {
-                Log.d("qqq", "Observe Pants: " + String.valueOf(cloths.size()));
                 clothAdapter_pants.setCloths(cloths);
             }
         });
@@ -115,7 +120,6 @@ public class Make_Outfit_activity extends BaseActivity {
         clothViewModel_shoes.getShowsLiveData().observe(this, new Observer<Cloths>() {
             @Override
             public void onChanged(Cloths cloths) {
-                Log.d("qqq", "Observe shows: " + String.valueOf(cloths.size()));
                 clothAdapter_shoes.setCloths(cloths);
             }
         });
@@ -123,7 +127,6 @@ public class Make_Outfit_activity extends BaseActivity {
         clothViewModel_shirt.getShirtsLiveData().observe(this, new Observer<Cloths>() {
             @Override
             public void onChanged(Cloths cloths) {
-                Log.d("qqq", "Observe Shits: " + String.valueOf(cloths.size()));
                 clothAdapter_shirt.setCloths(cloths);
             }
         });
@@ -189,12 +192,8 @@ public class Make_Outfit_activity extends BaseActivity {
         shoes_rv.setLayoutManager(new LinearLayoutManager(this));
 
 
-        // ------------ filter not working because, run the app with and without the filter and look at the changes ------------
-        Log.d("qqq", "Pants shirts");
         clothViewModel_shirt.filter("Sweater & Shirt");
-        Log.d("qqq", "Pants filter");
         clothViewModel_pants.filter("Pants & Shorts");
-        Log.d("qqq", "Pants shows");
         clothViewModel_shoes.filter("Shoes & Boots & Flip-Flops");
     }
 
@@ -238,25 +237,6 @@ public class Make_Outfit_activity extends BaseActivity {
         });
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.music_menu, menu);
-        return true;
-    }
-    public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        if (item.getItemId() == R.id.enable_Music) {
-            Toast.makeText(this, "Enable Music:", Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == R.id.disable_Music) {
-            Toast.makeText(this, "Disable Music", Toast.LENGTH_SHORT).show();
-        }
-
-        return true;
-    }
-
     public void speakText(String text) {
         if (textToSpeech != null && textToSpeech.isSpeaking() == false) {
             textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null); // Speak the text
@@ -269,5 +249,34 @@ public class Make_Outfit_activity extends BaseActivity {
         if (textToSpeech != null) {
             textToSpeech.shutdown();
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.music_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (Main_Page_Activity.player != null) {
+            if (item.getItemId() == R.id.enable_Music) {
+                Main_Page_Activity.player.start();
+            } else if (item.getItemId() == R.id.disable_Music) {
+                Main_Page_Activity.player.pause();
+            }
+        }
+
+        if (item.getItemId() == R.id.logOut_item) {
+            SharedPreferences preferences = getSharedPreferences("Android-Project", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("remember", false);
+            editor.apply();
+            finish();
+        }
+        return true;
     }
 }

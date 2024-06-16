@@ -10,6 +10,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -108,7 +109,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
             public void onChanged(Boolean aBoolean) {
                 Log.d("ll", "on change");
                 if (aBoolean){
-                    Toast.makeText(Add_Clothing_activity.this, "Saved successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Add_Clothing_activity.this, "Saved successfully !", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(Add_Clothing_activity.this, "Error!!!", Toast.LENGTH_SHORT).show();
@@ -237,6 +238,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         super.onPointerCaptureChanged(hasCapture);
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
@@ -244,13 +246,24 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         inflater.inflate(R.menu.music_menu, menu);
         return true;
     }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
+        if (Main_Page_Activity.player != null) {
+            if (item.getItemId() == R.id.enable_Music) {
+                Main_Page_Activity.player.start();
+            } else if (item.getItemId() == R.id.disable_Music) {
+                Main_Page_Activity.player.pause();
+            }
+        }
 
-        if (item.getItemId() == R.id.enable_Music) {
-            Toast.makeText(this, "Enable Music:", Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == R.id.disable_Music) {
-            Toast.makeText(this, "Disable Music", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.logOut_item) {
+            SharedPreferences preferences = getSharedPreferences("Android-Project", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("remember", false);
+            editor.apply();
+            finish();
         }
 
         return true;
