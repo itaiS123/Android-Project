@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import il.co.shivhit.androidproject.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    protected static MediaPlayer player;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

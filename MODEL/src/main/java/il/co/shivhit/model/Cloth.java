@@ -6,6 +6,7 @@ public class Cloth extends BaseEntity implements Serializable {
     private String category;
     private String color;
     private String image;
+    private String userIdfs;
 
     // בנאי 1
     public Cloth() {}
@@ -41,5 +42,13 @@ public class Cloth extends BaseEntity implements Serializable {
     // פעולה לשינוי התמונה לפי ערך מוכנס
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getUserIdfs() {
+        return userIdfs;
+    }
+
+    public void setUserIdfs(String userIdfs) {
+        this.userIdfs = userIdfs;
     }
 }

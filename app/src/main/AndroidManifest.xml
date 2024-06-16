@@ -7,8 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -20,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject"
         tools:targetApi="31">
+        <activity
+            android:name=".ACTIVITIES.Main_Page_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ACTIVITIES.Log_In_Activity"
+            android:exported="false" />
         <activity
             android:name=".ACTIVITIES.BaseActivity"
             android:exported="false" />

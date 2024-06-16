@@ -3,6 +3,7 @@ package il.co.shivhit.androidproject.ACTIVITIES;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
@@ -47,6 +48,12 @@ public class MainActivity extends BaseActivity {
         GenericViewModelFactory<AppUserViewModel> factory = new GenericViewModelFactory<>(getApplication(), AppUserViewModel::new);
         appUserViewModel = new ViewModelProvider(this, factory).get(AppUserViewModel.class);
 
+        SharedPreferences preferences = getSharedPreferences("Android-Project", MODE_PRIVATE);
+        if (preferences.getBoolean("remember", false)){
+            Intent intent = new Intent(MainActivity.this, Main_Page_Activity.class);
+            startActivity(intent);
+        }
+
         setObservers();
         setListeners();
     }
@@ -64,7 +71,8 @@ public class MainActivity extends BaseActivity {
         logIn_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, Log_In_Activity.class);
+                startActivity(intent);;
             }
         });
     }

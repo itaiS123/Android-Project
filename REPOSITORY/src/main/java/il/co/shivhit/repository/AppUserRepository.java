@@ -12,6 +12,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import il.co.shivhit.model.AppUser;
 import il.co.shivhit.model.AppUsers;
@@ -51,25 +52,34 @@ public class AppUserRepository {
 
         return taskCompletion.getTask();
     }
-
-    /*public Task<AppUsers> login(String username, String password) {
-        TaskCompletionSource<AppUsers> clothsCompletion = new TaskCompletionSource<>();
-        AppUsers appUsers = new AppUsers();
-        collection.whereEqualTo("userName", username).whereEqualTo("password", password).get()
-                .addOnSuccessListener(querySnapshot -> {
-                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                        for (DocumentSnapshot document : querySnapshot) {
-                            AppUser appuser = document.toObject(AppUser.class);
-                            if (appuser != null)
-                                appUsers.add(appuser);
-                        }
+    public Task<Boolean> exists(AppUser user)
+    {
+        TaskCompletionSource<Boolean> taskExist = new TaskCompletionSource<>();
+        collection.whereEqualTo("userName", user.getUserName()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+                if (document != null) {
+                    if(document.get("password").toString().equals(user.getPassword().toString()))
+                    {
+                        taskExist.setResult(true);
                     }
-                    clothsCompletion.setResult(appUsers);
-                })
-                .addOnFailureListener(e -> {
-                    clothsCompletion.setResult(null);
-                });
+                    else
+                        taskExist.setResult(false);
+                }
 
-        return clothsCompletion.getTask();
-    }*/
+                else
+                    taskExist.setResult(false);
+                }
+                else
+                    taskExist.setResult(false);
+                }})
+                .addOnFailureListener(new OnFailureListener()
+                {
+                    @Override
+                    public void onFailure(@NonNull Exception e) { taskExist.setResult(false); }
+                });
+        return taskExist.getTask();
+    }
 }

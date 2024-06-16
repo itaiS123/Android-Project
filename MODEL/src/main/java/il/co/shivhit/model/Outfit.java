@@ -6,6 +6,8 @@ public class Outfit extends BaseEntity implements Serializable {
     private Cloths cloths;
     private String nameOfOutfit;
     private String description;
+    private String userIdfs;
+
     // בנאי 1
     public Outfit() {}
     // בנאי2
@@ -40,5 +42,13 @@ public class Outfit extends BaseEntity implements Serializable {
     // פעולה לשינוי התיאור לפי ערך מוכנס
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUserIdfs() {
+        return userIdfs;
+    }
+
+    public void setUserIdfs(String userIdfs) {
+        this.userIdfs = userIdfs;
     }
 }

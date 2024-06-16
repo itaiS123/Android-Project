@@ -10,4 +10,8 @@
     <item
         android:title="Disable Music"
         android:id="@+id/disable_Music"/>
+
+    <item
+        android:title="Log Out"
+        android:id="@+id/logOut_item"/>
 </menu>
