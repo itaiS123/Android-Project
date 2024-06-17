@@ -59,23 +59,10 @@ public class Make_Outfit_activity extends BaseActivity {
 
     private TextToSpeech textToSpeech;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_outfit);
-
-        // Initialize TextToSpeech
-        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    // Set language (optional)
-                    textToSpeech.setLanguage(Locale.US); // Change Locale for different languages
-                }
-            }
-        });
 
         initializeViews();
         setObservers();
@@ -107,6 +94,17 @@ public class Make_Outfit_activity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        // Initialize TextToSpeech
+        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // Set language (optional)
+                    textToSpeech.setLanguage(Locale.US); // Change Locale for different languages
+                }
+            }
+        });
+
         setListeners();
     }
     private void setObservers(){
@@ -136,7 +134,7 @@ public class Make_Outfit_activity extends BaseActivity {
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
                     Toast.makeText(getApplicationContext(), "Outfit saved", Toast.LENGTH_SHORT).show();
-                    // make textToSpeech
+                    speakText("Outfit saved");
                     finish();
                 }
             }
@@ -157,6 +155,7 @@ public class Make_Outfit_activity extends BaseActivity {
                     public boolean onItemLongClicked(Cloth cloth) {
                         shirt = cloth;
                         Toast.makeText(Make_Outfit_activity.this, " Cloth saved (shirt)", Toast.LENGTH_SHORT).show();
+                        speakText("Cloth saved shirt");
                         return true;
                     }};
 
@@ -166,6 +165,7 @@ public class Make_Outfit_activity extends BaseActivity {
                     public boolean onItemLongClicked(Cloth cloth) {
                         pants = cloth;
                         Toast.makeText(Make_Outfit_activity.this, " Cloth saved (pants)", Toast.LENGTH_SHORT).show();
+                        speakText("Cloth saved pants");
                         return true;
                     }};
 
@@ -175,6 +175,7 @@ public class Make_Outfit_activity extends BaseActivity {
                     public boolean onItemLongClicked(Cloth cloth) {
                         shoes = cloth;
                         Toast.makeText(Make_Outfit_activity.this, " Cloth saved (shoes)", Toast.LENGTH_SHORT).show();
+                        speakText("Cloth saved shoes");
                         return true;
                     }};
 
@@ -236,21 +237,6 @@ public class Make_Outfit_activity extends BaseActivity {
            }
         });
     }
-
-    public void speakText(String text) {
-        if (textToSpeech != null && textToSpeech.isSpeaking() == false) {
-            textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null); // Speak the text
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (textToSpeech != null) {
-            textToSpeech.shutdown();
-        }
-    }
-
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
@@ -278,5 +264,19 @@ public class Make_Outfit_activity extends BaseActivity {
             finish();
         }
         return true;
+    }
+
+    public void speakText(String text) {
+        if (textToSpeech != null && textToSpeech.isSpeaking() == false) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null); // Speak the text
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (textToSpeech != null) {
+            textToSpeech.shutdown();
+        }
     }
 }

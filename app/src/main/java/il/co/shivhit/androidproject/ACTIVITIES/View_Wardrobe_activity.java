@@ -52,20 +52,6 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
         initializeViews();
         setRecyclerView();
         setObservers();
-
-        // Initialize TextToSpeech
-        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    // Set language (optional)
-                    textToSpeech.setLanguage(Locale.US); // Change Locale for different languages
-                }
-            }
-        });
-
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
     }
 
     private void setObservers(){
@@ -101,7 +87,7 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         deleteCloth(cloth);
-                                        speakText("Cloth successfully deleted");
+                                        speakText("Cloth successfully saved");
                                         Toast.makeText(View_Wardrobe_activity.this, "Cloth deleted", Toast.LENGTH_SHORT).show();
                                     }
                                 })
@@ -144,6 +130,22 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
 
         cloths = new Cloths();
         clothViewModel = new ViewModelProvider(this).get(ClothViewModel.class);
+
+        // Initialize TextToSpeech
+        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // Set language (optional)
+                    textToSpeech.setLanguage(Locale.US); // Change Locale for different languages
+                }
+            }
+        });
+
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+
+
         setListeners();
     }
 

@@ -1,6 +1,7 @@
 package il.co.shivhit.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -86,20 +87,23 @@ public class OutfitRepository {
                                     outfits.add(outfit);
                             }
                             outfitsCompletion.setResult(outfits);
-                        }
-                        else
+                        } else {
+                            Log.d("OutfitRepository", "No outfits found");
                             outfitsCompletion.setResult(outfits);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Log.e("OutfitRepository", "Error getting outfits", e);
                         outfitsCompletion.setResult(null);
                     }
                 });
 
         return outfitsCompletion.getTask();
     }
+
 
 
 

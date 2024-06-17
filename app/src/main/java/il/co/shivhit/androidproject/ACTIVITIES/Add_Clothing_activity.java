@@ -107,7 +107,6 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         clothViewModel.getSuccessOperation().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                Log.d("ll", "on change");
                 if (aBoolean){
                     Toast.makeText(Add_Clothing_activity.this, "Saved successfully !", Toast.LENGTH_SHORT).show();
                 }
@@ -159,7 +158,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
                 Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
                 clothViewModel.add(newCloth);
 
-                speakText("Cloth successfully saved");
+                speakText("Cloth successfully deleted");
 
                 // Handler to delay finish
                 final Handler handler = new Handler();
@@ -186,14 +185,6 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
             textToSpeech.shutdown();
         }
     }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 

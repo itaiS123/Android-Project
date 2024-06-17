@@ -42,10 +42,11 @@ public class View_Outfits_activity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_outfits);
         initializeViews();
+        loadData();
         setObservers();
         setRecyclerView();
-        loadData();
     }
+
     private void loadData() {
         viewModel.getAll();
     }
@@ -66,11 +67,16 @@ public class View_Outfits_activity extends BaseActivity {
     private void setObservers() {
         viewModel.getOutfitsLiveData().observe(this, new Observer<Outfits>() {
             @Override
-            public void onChanged(Outfits outfits) {
-                adapter.setOutfits(outfits);
+            public void onChanged(Outfits updatedOutfits) {
+                if (updatedOutfits != null) {
+                    outfits = updatedOutfits;
+                    adapter.setOutfits(outfits);
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
     }
+
     private void setRecyclerView() {
         OutfitAdapter.OnItemLongClickListener longClickListener = new OutfitAdapter.OnItemLongClickListener() {
             @Override
