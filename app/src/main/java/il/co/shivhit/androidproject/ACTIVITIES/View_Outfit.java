@@ -1,9 +1,5 @@
 package il.co.shivhit.androidproject.ACTIVITIES;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,35 +7,42 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import il.co.shivhit.androidproject.R;
-import il.co.shivhit.model.AppUser;
 
-public class Outfits_activity extends BaseActivity {
-    private Button viewOutfits_btn;
-    private Button makeAnOutfit_btn;
+public class View_Outfit extends BaseActivity {
+    private TextView outfitName_tv;
+    private TextView description_tv;
+    private ImageView shirt_imgView;
+    private ImageView pants_imgView;
+    private ImageView shoes_imgView;
     private Button returnBack_Btn;
-    private AppUser loggedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_outfits);
+        setContentView(R.layout.activity_view_outfit);
         initializeViews();
-
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
     }
 
     @Override
     protected void initializeViews() {
+        outfitName_tv = findViewById(R.id.outfitName_tv);
+        description_tv = findViewById(R.id.description_tv);
+
+        shirt_imgView = findViewById(R.id.shirt_imgView);
+        pants_imgView = findViewById(R.id.pants_imgView);
+        shoes_imgView = findViewById(R.id.shoes_imgView);
+
         returnBack_Btn = findViewById(R.id.returnBack_Btn);
-        viewOutfits_btn = findViewById(R.id.viewOutfits_btn);
-        makeAnOutfit_btn = findViewById(R.id.makeAnOutfit_btn);
-
-        loggedUser = (AppUser)getIntent().getSerializableExtra("loggedUser");
-
 
         setListeners();
     }
@@ -48,30 +51,11 @@ public class Outfits_activity extends BaseActivity {
     protected void setListeners() {
         returnBack_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        makeAnOutfit_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent makeOtfit_intent = new Intent(Outfits_activity.this, Make_Outfit_activity.class);
-                makeOtfit_intent.putExtra("loggedUser", loggedUser);
-                startActivityForResult(makeOtfit_intent, 1);
-            }
-        });
-
-        viewOutfits_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent viewOutfits_intent = new Intent(Outfits_activity.this, View_Outfits_activity.class);
-                viewOutfits_intent.putExtra("loggedUser", loggedUser);
-                startActivityForResult(viewOutfits_intent, 2);
-            }
+            public void onClick(View v) { finish(); }
         });
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
@@ -80,9 +64,9 @@ public class Outfits_activity extends BaseActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
         if (Main_Page_Activity.player != null) {
             if (item.getItemId() == R.id.enable_Music) {
                 Main_Page_Activity.player.start();
@@ -98,6 +82,7 @@ public class Outfits_activity extends BaseActivity {
             editor.apply();
             finish();
         }
+
         return true;
     }
 }

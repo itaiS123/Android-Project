@@ -1,27 +1,25 @@
 package il.co.shivhit.androidproject.ACTIVITIES;
 
-import static android.widget.Toast.LENGTH_SHORT;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
 
 import il.co.shivhit.androidproject.R;
 import il.co.shivhit.model.AppUser;
 import il.co.shivhit.viewmodel.AppUserViewModel;
 import il.co.shivhit.viewmodel.GenericViewModelFactory;
+
+
 
 public class MainActivity extends BaseActivity {
     private Button register_btn;
@@ -29,7 +27,6 @@ public class MainActivity extends BaseActivity {
     private EditText username_et;
     private EditText password_et;
     private AppUserViewModel appUserViewModel;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

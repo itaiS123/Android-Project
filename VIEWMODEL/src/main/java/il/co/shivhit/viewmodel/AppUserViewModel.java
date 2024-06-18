@@ -16,6 +16,8 @@ public class AppUserViewModel extends AndroidViewModel {
     private AppUserRepository repository;
     private MutableLiveData<AppUsers> appUsersLiveData;
     private MutableLiveData<Boolean> existsUser;
+    private MutableLiveData<String> userId;
+
 
 
 
@@ -25,6 +27,7 @@ public class AppUserViewModel extends AndroidViewModel {
         successOperation = new MutableLiveData<>();
         appUsersLiveData = new MutableLiveData<>();
         existsUser = new MutableLiveData<>();
+        userId = new MutableLiveData<>();
     }
 
     public void add(AppUser appUser) {
@@ -38,6 +41,15 @@ public class AppUserViewModel extends AndroidViewModel {
                 .addOnSuccessListener(aBoolean -> { existsUser.setValue(aBoolean);})
                 .addOnFailureListener(aBoolean -> { existsUser.setValue(false);});
     }
+    public void getIdFromUserName(String userName){
+        repository.getIdFromUserName(userName)
+                .addOnSuccessListener(nameUser -> { userId.setValue(nameUser);})
+                .addOnFailureListener(nameUser -> { userId.setValue("ERROR");});
+    }
+    public LiveData<String> getUserId(){
+        return userId;
+    }
+
     public LiveData<Boolean> getSuccessOperation() {
         return successOperation;
     }

@@ -1,41 +1,38 @@
 package il.co.shivhit.androidproject.ACTIVITIES;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import ADAPTERS.ClothAdapter;
+import java.util.ArrayList;
+
 import ADAPTERS.OutfitAdapter;
 import il.co.shivhit.androidproject.R;
-import il.co.shivhit.model.Cloth;
+import il.co.shivhit.model.AppUser;
 import il.co.shivhit.model.Cloths;
 import il.co.shivhit.model.Outfit;
-import il.co.shivhit.model.Outfits;
-import il.co.shivhit.viewmodel.ClothViewModel;
 import il.co.shivhit.viewmodel.OutfitViewModel;
 
 public class View_Outfits_activity extends BaseActivity {
     private Button returnBack_btn;
     private RecyclerView listOfOutfits_rv;
     private OutfitAdapter adapter;
-    private Outfits outfits;
+    private ArrayList<String> outfits_names;
     private OutfitViewModel viewModel;
+    private AppUser loggedUser;
+    private Cloths cloths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +45,7 @@ public class View_Outfits_activity extends BaseActivity {
     }
 
     private void loadData() {
-        viewModel.getAll();
+        viewModel.getAll(loggedUser);
     }
 
     @Override
@@ -56,23 +53,32 @@ public class View_Outfits_activity extends BaseActivity {
         returnBack_btn = findViewById(R.id.returnBack_btn);
         listOfOutfits_rv = findViewById(R.id.listOfOutfits_rv);
 
-        outfits = new Outfits();
+        outfits_names = new ArrayList<String>();
         viewModel = new ViewModelProvider(this).get(OutfitViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        loggedUser = (AppUser) getIntent().getSerializableExtra("loggedUser");
+
+        cloths = new Cloths();
+
         setListeners();
     }
     private void setObservers() {
-        viewModel.getOutfitsLiveData().observe(this, new Observer<Outfits>() {
+        viewModel.getOutfitsLiveDataNames().observe(this, new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(Outfits updatedOutfits) {
-                if (updatedOutfits != null) {
-                    outfits = updatedOutfits;
-                    adapter.setOutfits(outfits);
-                    adapter.notifyDataSetChanged();
-                }
+            public void onChanged(ArrayList<String> strings) {
+                outfits_names = strings;
+                adapter.setOutfits_names(outfits_names);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        viewModel.getCloths().observe(this, new Observer<Cloths>() {
+            @Override
+            public void onChanged(Cloths cloths) {
+
             }
         });
     }
@@ -80,13 +86,17 @@ public class View_Outfits_activity extends BaseActivity {
     private void setRecyclerView() {
         OutfitAdapter.OnItemLongClickListener longClickListener = new OutfitAdapter.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClicked(Outfit outfit) {
-                Toast.makeText(View_Outfits_activity.this, " long click", Toast.LENGTH_SHORT).show();
+            public boolean onItemLongClicked(String outfit_name) {
+                Intent intent = new Intent(View_Outfits_activity.this, View_Outfit.class);
+                intent.putExtra("outfit_name", outfit_name);
+
+
+                startActivity(intent);
                 return true;
             }
         };
 
-        adapter = new OutfitAdapter(this, outfits, R.layout.single_outfit_name, longClickListener);
+        adapter = new OutfitAdapter(this, outfits_names, R.layout.single_outfit_name, longClickListener);
         listOfOutfits_rv.setAdapter(adapter);
         listOfOutfits_rv.setLayoutManager(new LinearLayoutManager(this));
     }

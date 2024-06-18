@@ -12,10 +12,11 @@ public class Cloth extends BaseEntity implements Serializable {
     public Cloth() {}
 
     // בנאי 2
-    public Cloth(String category, String color, String image) {
+    public Cloth(String category, String color, String image, String userIdfs) {
         this.category = category;
         this.color = color;
         this.image = image;
+        this.userIdfs = userIdfs;
     }
 
     // פעולה לקבלת קטגוריה

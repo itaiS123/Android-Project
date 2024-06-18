@@ -37,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Locale;
 
 import il.co.shivhit.androidproject.R;
+import il.co.shivhit.model.AppUser;
 import il.co.shivhit.model.Cloth;
 import il.co.shivhit.viewmodel.ClothViewModel;
 import il.co.shivhit.viewmodel.GenericViewModelFactory;
@@ -53,6 +54,7 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_GALLERY = 2;
     private static final int REQUEST_CAMERA_PERMISSION = 100;
+    private AppUser loggedUser;
 
 
     @Override
@@ -96,6 +98,9 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
         adapter_category.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category_spinner.setAdapter(adapter_category);
         category_spinner.setOnItemSelectedListener(this);
+
+        loggedUser = (AppUser) getIntent().getSerializableExtra("loggedUser");
+
         setListeners();
         setObservers();
     }
@@ -108,10 +113,21 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
-                    Toast.makeText(Add_Clothing_activity.this, "Saved successfully !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Add_Clothing_activity.this, "Cloth successfully saved", Toast.LENGTH_SHORT).show();
+                    speakText("Cloth successfully saved");
+                    // Handler to delay finish
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 1500); // Adjust delay time (in milliseconds) as needed
+
                 }
                 else {
                     Toast.makeText(Add_Clothing_activity.this, "Error!!!", Toast.LENGTH_SHORT).show();
+                    speakText("Error with saving the photo");
                 }
             }
         });
@@ -155,19 +171,10 @@ public class Add_Clothing_activity extends BaseActivity implements AdapterView.O
                 // Get the image from ImageView
                 Bitmap clothImage = ((BitmapDrawable) shirt_imgView.getDrawable()).getBitmap();
 
-                Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage));
+                String idfsUser = loggedUser.getIdfs();
+
+                Cloth newCloth = new Cloth(selectedCategory, selectedColor, bitmapToString(clothImage), idfsUser);
                 clothViewModel.add(newCloth);
-
-                speakText("Cloth successfully deleted");
-
-                // Handler to delay finish
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                }, 1500); // Adjust delay time (in milliseconds) as needed
             }
         });
     }

@@ -15,11 +15,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import il.co.shivhit.androidproject.R;
+import il.co.shivhit.model.AppUser;
 
 public class Wardrobe_activity extends BaseActivity { // Inherits from BaseActivity
     private Button goBack_btn;
     private Button addClothing_btn;
     private Button viewWardrobe_btn;
+    private AppUser loggedUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,7 @@ public class Wardrobe_activity extends BaseActivity { // Inherits from BaseActiv
         addClothing_btn = findViewById(R.id.addClothing_btn);
         viewWardrobe_btn = findViewById(R.id.viewWardrobe_btn);
 
+        loggedUser = (AppUser) getIntent().getSerializableExtra("loggedUser");
 
         setListeners();
     }
@@ -53,6 +56,7 @@ public class Wardrobe_activity extends BaseActivity { // Inherits from BaseActiv
             @Override
             public void onClick(View v) {
                 Intent addClothing_intent = new Intent(Wardrobe_activity.this, Add_Clothing_activity.class);
+                addClothing_intent.putExtra("loggedUser", loggedUser);
                 startActivityForResult(addClothing_intent, 1);
             }
         });
@@ -61,6 +65,7 @@ public class Wardrobe_activity extends BaseActivity { // Inherits from BaseActiv
             @Override
             public void onClick(View v) {
                 Intent viewWardrobe_intent = new Intent(Wardrobe_activity.this, View_Wardrobe_activity.class);
+                viewWardrobe_intent.putExtra("loggedUser", loggedUser);
                 startActivityForResult(viewWardrobe_intent, 2);
             }
         });

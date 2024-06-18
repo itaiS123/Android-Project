@@ -29,6 +29,7 @@ public class Log_In_Activity extends BaseActivity {
     private EditText password_et;
     private AppUserViewModel appUserViewModel;
     private CheckBox remember_checkBox;
+    private AppUser loggedUser;
 
 
     @Override
@@ -46,8 +47,12 @@ public class Log_In_Activity extends BaseActivity {
         remember_checkBox = findViewById(R.id.remember_checkBox);
 
         SharedPreferences preferences = getSharedPreferences("Android-Project", MODE_PRIVATE);
-        if (preferences.getBoolean("remember", false)){
+        if (preferences.getBoolean("remember", false)) {
+            AppUser appUser = new AppUser("itai", "itai123");
+            appUser.setIdfs("z8CORF15F0VBVEILSX01");
+
             Intent intent = new Intent(Log_In_Activity.this, Main_Page_Activity.class);
+            intent.putExtra("loggedUser", appUser);
             startActivity(intent);
         }
 
@@ -62,6 +67,7 @@ public class Log_In_Activity extends BaseActivity {
             public void onClick(View v) {
                 if (!username_et.getText().toString().equals(null) && !password_et.getText().toString().equals(null)){
                     AppUser appUser = new AppUser(username_et.getText().toString(), password_et.getText().toString());
+                    loggedUser = appUser;
                     appUserViewModel.exists(appUser);
                 }
                 else {
@@ -90,11 +96,24 @@ public class Log_In_Activity extends BaseActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
-                    Intent intent = new Intent(Log_In_Activity.this, Main_Page_Activity.class);
-                    startActivity(intent);
+                    appUserViewModel.getIdFromUserName(loggedUser.getUserName());
                 }
                 else{
                     Toast.makeText(Log_In_Activity.this, "username or password is incorrect, please try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        appUserViewModel.getUserId().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != "ERROR") {
+                    loggedUser.setIdfs(s);
+                    Intent intent = new Intent(Log_In_Activity.this, Main_Page_Activity.class);
+                    intent.putExtra("loggedUser", loggedUser);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Could not find user", Toast.LENGTH_SHORT).show();
                 }
             }
         });

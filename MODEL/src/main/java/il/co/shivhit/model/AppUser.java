@@ -1,6 +1,6 @@
 package il.co.shivhit.model;
 
-public class AppUser extends BaseEntity{
+public class AppUser extends BaseEntity {
     private String userName;
     private String password;
 

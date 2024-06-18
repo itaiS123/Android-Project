@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import il.co.shivhit.model.AppUser;
 import il.co.shivhit.model.Cloth;
 import il.co.shivhit.model.Cloths;
 import il.co.shivhit.repository.ClothRepository;
@@ -35,6 +36,7 @@ public class ClothViewModel extends AndroidViewModel {
         shirtsLiveData = new MutableLiveData<>();
         pantsLiveData = new MutableLiveData<>();
         showsLiveData = new MutableLiveData<>();
+
     }
 
     public void add(Cloth cloth) {
@@ -67,8 +69,8 @@ public class ClothViewModel extends AndroidViewModel {
         return successOperation;
     }
 
-    public LiveData<Cloths> getAll() {
-        repository.getAll()
+    public LiveData<Cloths> getAll(AppUser appUser) {
+        repository.getAll(appUser)
                 .addOnSuccessListener(cloths -> clothsLiveData.setValue(cloths))
                 .addOnFailureListener(e -> clothsLiveData.setValue(null));
 

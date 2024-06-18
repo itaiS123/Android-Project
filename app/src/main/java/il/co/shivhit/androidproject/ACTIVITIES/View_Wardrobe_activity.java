@@ -27,6 +27,7 @@ import java.util.Locale;
 
 import ADAPTERS.ClothAdapter;
 import il.co.shivhit.androidproject.R;
+import il.co.shivhit.model.AppUser;
 import il.co.shivhit.model.Cloth;
 import il.co.shivhit.model.Cloths;
 import il.co.shivhit.viewmodel.ClothViewModel;
@@ -41,8 +42,9 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
     private Cloths cloths;
     private RecyclerView filter_rv;
     private ClothAdapter clothAdapter;
-
     private TextToSpeech textToSpeech;
+
+    private AppUser loggedUser;
 
 
     @Override
@@ -55,7 +57,7 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
     }
 
     private void setObservers(){
-        clothViewModel.getAll()
+        clothViewModel.getClothsLiveData()
                 .observe(this, new Observer<Cloths>() {
                     @Override
                     public void onChanged(Cloths observedCloths) {
@@ -145,6 +147,8 @@ public class View_Wardrobe_activity extends BaseActivity implements AdapterView.
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        loggedUser = (AppUser) getIntent().getSerializableExtra("loggedUser");
+        clothViewModel.getAll(loggedUser);
 
         setListeners();
     }

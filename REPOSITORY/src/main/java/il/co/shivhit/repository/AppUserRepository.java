@@ -82,4 +82,31 @@ public class AppUserRepository {
                 });
         return taskExist.getTask();
     }
+
+    public Task<String> getIdFromUserName(String username){
+        TaskCompletionSource<String> userId = new TaskCompletionSource<>();
+        collection.whereEqualTo("userName", username).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                    DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+                    if (document != null) {
+                        userId.setResult(document.getId());
+                    }
+                    else {
+                        userId.setResult("ERROR");
+                    }
+                }
+                else {
+                    userId.setResult("ERROR");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                userId.setResult("ERROR");
+            }
+        });
+        return  userId.getTask();
+    }
 }

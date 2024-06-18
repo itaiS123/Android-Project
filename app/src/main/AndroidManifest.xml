@@ -19,6 +19,9 @@
         android:theme="@style/Theme.AndroidProject"
         tools:targetApi="31">
         <activity
+            android:name=".ACTIVITIES.View_Outfit"
+            android:exported="false" />
+        <activity
             android:name=".ACTIVITIES.Main_Page_Activity"
             android:exported="false" />
         <activity

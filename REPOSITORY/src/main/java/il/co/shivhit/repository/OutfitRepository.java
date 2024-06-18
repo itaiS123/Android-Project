@@ -13,8 +13,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
+import il.co.shivhit.model.AppUser;
+import il.co.shivhit.model.Cloths;
 import il.co.shivhit.model.Outfit;
 import il.co.shivhit.model.Outfits;
 
@@ -73,23 +78,25 @@ public class OutfitRepository {
     }
 
 
-    public Task<Outfits> getAll() {
-        TaskCompletionSource<Outfits> outfitsCompletion = new TaskCompletionSource<>();
-        Outfits outfits = new Outfits();
-        collection.get()
+    public Task<ArrayList<String>> getAll(AppUser appUser) {
+        TaskCompletionSource<ArrayList<String>> outfitsCompletion = new TaskCompletionSource<>();
+        ArrayList<String> outfits_names = new ArrayList<String>();
+
+
+        collection.whereEqualTo("userIdfs", appUser.getIdfs()).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot querySnapshot) {
                         if (querySnapshot != null && !querySnapshot.isEmpty()) {
                             for (DocumentSnapshot document : querySnapshot) {
-                                Outfit outfit = document.toObject(Outfit.class);
-                                if (outfit != null)
-                                    outfits.add(outfit);
+                                String outfit_name = document.get("nameOfOutfit").toString();
+                                if (!outfit_name.isEmpty())
+                                    outfits_names.add(outfit_name);
                             }
-                            outfitsCompletion.setResult(outfits);
+                            outfitsCompletion.setResult(outfits_names);
                         } else {
                             Log.d("OutfitRepository", "No outfits found");
-                            outfitsCompletion.setResult(outfits);
+                            outfitsCompletion.setResult(null);
                         }
                     }
                 })
@@ -104,9 +111,35 @@ public class OutfitRepository {
         return outfitsCompletion.getTask();
     }
 
+    public Task<Cloths> getOutfitUsingNameOfOutfit(String nameOfOutfit) {
+        TaskCompletionSource<Cloths> outfitCompletion = new TaskCompletionSource<>();
+        collection.whereEqualTo("nameOfOutfit", nameOfOutfit).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot querySnapshot) {
+                if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                    for (DocumentSnapshot document : querySnapshot) {
+                        String outfit_name = document.getString("nameOfOutfit");
+                        if (outfit_name != null && outfit_name.equals(nameOfOutfit)) {
+                            Cloths cloths = (Cloths) document.get("cloths");
+                            outfitCompletion.setResult(cloths);
+                            return;
+                        }
+                    }
+                    Log.d("OutfitRepository", "No matching outfit found");
+                    outfitCompletion.setResult(null);
+                } else {
+                    Log.d("OutfitRepository", "No outfits found");
+                    outfitCompletion.setResult(null);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("OutfitRepository", "Error getting outfit", e);
+                outfitCompletion.setException(e);
+            }
+        });
 
-
-
-
-
+        return outfitCompletion.getTask();
+    }
 }

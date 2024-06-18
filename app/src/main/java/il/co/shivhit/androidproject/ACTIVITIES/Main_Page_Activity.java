@@ -21,6 +21,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import il.co.shivhit.androidproject.R;
+import il.co.shivhit.model.AppUser;
 
 public class Main_Page_Activity extends BaseActivity {
     private Button wardrobe_btn;
@@ -28,6 +29,7 @@ public class Main_Page_Activity extends BaseActivity {
 
     public static MediaPlayer player;
     private final int musicResourceId = R.raw.mp3;
+    private AppUser loggedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class Main_Page_Activity extends BaseActivity {
             Toast.makeText(this, "Error creating media player", LENGTH_SHORT).show();
         }
 
+        loggedUser = (AppUser)getIntent().getSerializableExtra("loggedUser");
+
         setListeners();
     }
 
@@ -61,6 +65,7 @@ public class Main_Page_Activity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Main_Page_Activity.this, Wardrobe_activity.class);
+                intent.putExtra("loggedUser", loggedUser);
                 startActivityForResult(intent, 2);
             }
         });
@@ -69,6 +74,7 @@ public class Main_Page_Activity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Main_Page_Activity.this, Outfits_activity.class);
+                intent.putExtra("loggedUser", loggedUser);
                 startActivityForResult(intent, 1);
             }
         });

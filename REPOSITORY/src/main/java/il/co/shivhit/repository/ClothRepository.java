@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import il.co.shivhit.model.AppUser;
 import il.co.shivhit.model.Cloth;
 import il.co.shivhit.model.Cloths;
 
@@ -77,11 +78,11 @@ public class ClothRepository {
     }
 
 
-    public Task<Cloths> getAll() {
+    public Task<Cloths> getAll(AppUser appUser) {
         TaskCompletionSource<Cloths> clothsCompletion = new TaskCompletionSource<>();
 
         Cloths cloths = new Cloths();
-        collection.get()
+        collection.whereEqualTo("userIdfs", appUser.getIdfs()).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot querySnapshot) {

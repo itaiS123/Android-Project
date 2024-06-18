@@ -10,23 +10,26 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import il.co.shivhit.model.Cloth;
+import java.util.ArrayList;
+
+import il.co.shivhit.model.AppUser;
 import il.co.shivhit.model.Cloths;
 import il.co.shivhit.model.Outfit;
 import il.co.shivhit.model.Outfits;
-import il.co.shivhit.repository.ClothRepository;
 import il.co.shivhit.repository.OutfitRepository;
 
 public class OutfitViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> successOperation;
     private OutfitRepository repository;
-    private MutableLiveData<Outfits> outfitsLiveData;
+    private MutableLiveData<ArrayList<String>> outfitsLiveDataNames;
+    private MutableLiveData<Cloths> clothsLiveDataNames;
 
     public OutfitViewModel(@NonNull Application application) {
         super(application);
         repository = new OutfitRepository(application);
         successOperation = new MutableLiveData<>();
-        outfitsLiveData = new MutableLiveData<>();
+        outfitsLiveDataNames = new MutableLiveData<>();
+        clothsLiveDataNames = new MutableLiveData<>();
     }
 
     public void add(Outfit outfit) {
@@ -57,12 +60,19 @@ public class OutfitViewModel extends AndroidViewModel {
     public LiveData<Boolean> getSuccessOperation() {
         return successOperation;
     }
-    public LiveData<Outfits> getOutfitsLiveData() {return outfitsLiveData; }
-    public LiveData<Outfits> getAll() {
-        repository.getAll()
-                .addOnSuccessListener(outfits -> outfitsLiveData.setValue(outfits))
-                .addOnFailureListener(e -> outfitsLiveData.setValue(null));
+    public LiveData<ArrayList<String>> getOutfitsLiveDataNames() {return outfitsLiveDataNames; }
+    public LiveData<Cloths> getCloths() {return clothsLiveDataNames; }
 
-        return outfitsLiveData;
+    public LiveData<ArrayList<String>> getAll(AppUser appUser) {
+        repository.getAll(appUser)
+                .addOnSuccessListener(outfits -> outfitsLiveDataNames.setValue(outfits))
+                .addOnFailureListener(e -> outfitsLiveDataNames.setValue(null));
+
+        return outfitsLiveDataNames;
+    }
+    public void getOutfitUsingNameOfOutfit(String outfit_name) {
+        repository.getOutfitUsingNameOfOutfit(outfit_name)
+                .addOnSuccessListener(cloths -> clothsLiveDataNames.setValue(cloths))
+                .addOnFailureListener(e -> clothsLiveDataNames.setValue(null));
     }
 }

@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import ADAPTERS.ClothAdapter;
 import il.co.shivhit.androidproject.R;
+import il.co.shivhit.model.AppUser;
 import il.co.shivhit.model.Cloth;
 import il.co.shivhit.model.Cloths;
 import il.co.shivhit.model.Outfit;
@@ -59,6 +60,8 @@ public class Make_Outfit_activity extends BaseActivity {
 
     private TextToSpeech textToSpeech;
 
+    private AppUser loggedUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +96,8 @@ public class Make_Outfit_activity extends BaseActivity {
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
+        loggedUser = (AppUser) getIntent().getSerializableExtra("loggedUser");
 
         // Initialize TextToSpeech
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -217,9 +222,10 @@ public class Make_Outfit_activity extends BaseActivity {
                     cloths.add(shoes);
 
                     Outfit outfit = new Outfit(cloths, name_et.getText().toString(), description_et.getText().toString());
+                    outfit.setUserIdfs(loggedUser.getIdfs().toString());
                     outfitViewModel.add(outfit);
 
-                    speakText("Cloth successfully saved");
+                    speakText("Outfit successfully saved");
 
                     // Handler to delay finish
                     final Handler handler = new Handler();
